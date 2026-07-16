@@ -16,3 +16,8 @@ jobs:
           python-version: "3.12"
       - name: 課題1 ヘルスチェックCLI
         run: python -m unittest discover -s projects/01-healthcheck -v
+
+      # 課題2の採点対象は「DBが無くても判定できる純関数」だけなので、
+      # ここで PostgreSQL を立てる必要はない（DBに繋ぐ部分は自己チェック）。
+      - name: 課題2 DB日次点検
+        run: python -m unittest discover -s projects/02-db-check -v
