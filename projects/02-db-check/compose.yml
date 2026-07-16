@@ -1,0 +1,61 @@
+# 課題2の検証環境。これは完成品だ——中身を理解しなくても、そのまま動く。
+# この課題で学ぶのはDBの点検であって、Dockerではない。
+#
+#   起動:     docker compose up -d
+#   状態確認: docker compose ps        （STATUS が healthy になるまで待つ）
+#   完全初期化: docker compose down -v && docker compose up -d
+#
+# Oracle選択トラックの人だけ: docker compose --profile oracle up -d
+# （主線はPostgreSQLだけ。Oracleは重いので、profiles で普段は起動しない）
+
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      # パスワードは .env から読む。compose.yml に直書きしない（秘密の分離）。
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?.env を用意すること（.env.example をコピー）}
+      POSTGRES_DB: terakoya
+      # 点検専用の読み取り専用ユーザーを作るために、初期化スクリプトへ渡す。
+      CHECKER_PASSWORD: ${CHECKER_PASSWORD:?.env を用意すること（.env.example をコピー）}
+    ports:
+      - "5432:5432"
+    volumes:
+      # 初回起動時だけ、この中のスクリプトが上から順に実行される。
+      - ./initdb:/docker-entrypoint-initdb.d:ro
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      # 「起動した」と「受け付けられる」は別物。healthy を待つ作法をここで体験する。
+      #
+      # -h 127.0.0.1 は必須。省略すると pg_isready は Unix ソケットに繋ぎにいくが、
+      # 初期化中の一時サーバもソケットだけは開けている（TCPは閉じている）。
+      # つまり checker ロールを作り終える前に「healthy」と嘘をつく。
+      # TCP を叩けば、初期化中は必ず失敗する＝外から使える状態だけを healthy と呼べる。
+      test: ["CMD-SHELL", "pg_isready -U postgres -d terakoya -h 127.0.0.1"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 10s
+
+  oracle:
+    # 選択トラック専用。--profile oracle を付けたときだけ起動する。
+    profiles: ["oracle"]
+    image: gvenzl/oracle-free:slim
+    environment:
+      ORACLE_PASSWORD: ${ORACLE_PASSWORD:-oraclepass}
+      APP_USER: checker
+      APP_USER_PASSWORD: ${CHECKER_PASSWORD:-checkerpass}
+    ports:
+      - "1521:1521"
+    volumes:
+      - ./initdb-oracle:/container-entrypoint-initdb.d:ro
+      - oradata:/opt/oracle/oradata
+    healthcheck:
+      test: ["CMD", "healthcheck.sh"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+
+volumes:
+  pgdata:
+  oradata:

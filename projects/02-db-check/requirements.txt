@@ -1,0 +1,11 @@
+# 課題2で使う外部パッケージ。venv を有効にしてから:
+#   pip install -r requirements.txt
+#
+# psycopg = PostgreSQL に接続するためのドライバ（version 3 系）。
+# [binary] は、コンパイル済みのものを取ってくる指定（自前ビルドが要らない）。
+psycopg[binary]>=3.1,<4
+
+# python-dotenv = .env を読み込む道具。
+# .env は魔法のファイルではない——docker compose は読んでくれるが、
+# あなたの Python は自動では読まない。load_dotenv() で明示的に読む。
+python-dotenv>=1.0,<2

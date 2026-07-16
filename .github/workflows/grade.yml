@@ -1,11 +1,10 @@
 name: 自動採点
 
-# push と Pull Request のたびに、各課題のテストを走らせる。
+# Pull Request のたびに、各課題のテストを走らせる（採点は「PRが緑になる」で確認する）。
+# main への push では走らせない——テンプレートのコピー直後に赤い×が出て驚かせないため。
 # 追加のインストールは不要（Python 標準ライブラリの unittest だけ）。秘密も使わない。
 on:
   pull_request:
-  push:
-    branches: [main]
 
 jobs:
   grade:
@@ -17,3 +16,8 @@ jobs:
           python-version: "3.12"
       - name: 課題1 ヘルスチェックCLI
         run: python -m unittest discover -s projects/01-healthcheck -v
+
+      # 課題2の採点対象は「DBが無くても判定できる純関数」だけなので、
+      # ここで PostgreSQL を立てる必要はない（DBに繋ぐ部分は自己チェック）。
+      - name: 課題2 DB日次点検
+        run: python -m unittest discover -s projects/02-db-check -v

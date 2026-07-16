@@ -37,7 +37,7 @@
 |---|---|---|---|---|
 | 0 | `projects/00-setup/` | ローカルでPythonを動かす | 環境チェック | 公開中 |
 | 1 | `projects/01-healthcheck/` | サーバーヘルスチェックCLI | あり | 公開中 |
-| 2 | `projects/02-db-check/` | DB日次点検（PostgreSQL/Oracle選択） | 一部 | 準備中 |
+| 2 | `projects/02-db-check/` | DB日次点検（PostgreSQL主線/Oracle選択） | 一部 | 公開中 |
 | 3 | `projects/03-log-analysis/` | ログ解析と通知 | あり | 準備中 |
 | 4 | `projects/04-config-diff/` | 構成差分と変更系ツール | 一部 | 準備中 |
 | 5 | `projects/05-web-api/` | 点検結果管理API（FastAPI） | あり | 準備中 |
@@ -58,6 +58,11 @@ Terakoya の3コース（システムとコードの基礎／インフラ基礎�
 | `python` と打つと Store が開く／見つからない | 常に `python3` と打つ。課題0の Windows/Mac 編へ |
 | パッケージが「入れたのに無い」と言われる | venv を activate し忘れ。`source .venv/bin/activate` |
 | `ModuleNotFoundError: No module named 'healthcheck'` | 各課題のフォルダ（例: `projects/01-healthcheck`）の中で `python -m unittest` を実行 |
+| `python: command not found` | venv を activate し忘れ。`python` は venv の中にだけ居る（外は `python3`） |
+| （課題2）`docker compose up` が動かない | Docker Desktop が起動しているか確認。会社PCなら利用条件を情シスに確認 |
+| （課題2）コンテナは動いてるのに接続できない | `docker compose ps` で STATUS が `healthy` か見る。起動直後は数十秒待つ |
+| （課題2）`password authentication failed` | `.env` を作ったか（`cp .env.example .env`）。作り直すなら `docker compose down -v` から |
+| （課題2）DBが変な状態になった | `docker compose down -v && docker compose up -d` でまっさらに戻る |
 | Checks（自動採点）が赤い | 赤いジョブを開き、落ちたテストの出力を読む。そこが直す場所 |
 | Checks がそもそも出ない | リポジトリの「Actions」タブでワークフローを有効化 |
 | ぐちゃぐちゃになった | このコピーを消して、テンプレートから作り直してよい |
