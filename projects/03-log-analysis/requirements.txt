@@ -1,0 +1,9 @@
+# 課題3で使う外部パッケージ。venv を有効にしてから:
+#   pip install -r requirements.txt
+
+# requests = HTTP を人間らしく書けるライブラリ。Slack への通知（POST）に使う。
+requests>=2.31,<3
+
+# python-dotenv = .env を読み込む道具（課題2と同じ）。
+# Webhook URL は「URLの形をしたパスワード」なので .env に置く。
+python-dotenv>=1.0,<2
