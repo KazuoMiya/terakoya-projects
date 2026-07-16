@@ -21,3 +21,6 @@ jobs:
       # ここで PostgreSQL を立てる必要はない（DBに繋ぐ部分は自己チェック）。
       - name: 課題2 DB日次点検
         run: python -m unittest discover -s projects/02-db-check -v
+
+      - name: 課題3 ログ解析
+        run: python -m unittest discover -s projects/03-log-analysis -v

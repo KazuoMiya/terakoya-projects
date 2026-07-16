@@ -1,0 +1,475 @@
+2026-07-14 00:00:11 INFO  request handled path=/api/orders status=200
+2026-07-14 00:07:55 ERROR payment failed: card declined user_id=u100
+2026-07-14 00:10:12 INFO  request handled path=/api/users status=200
+2026-07-14 00:20:13 INFO  request handled path=/health status=200
+2026-07-14 00:26:55 ERROR payment failed: card declined user_id=u101
+2026-07-14 00:30:14 INFO  request handled path=/api/items status=200
+2026-07-14 00:40:15 INFO  request handled path=/login status=200
+2026-07-14 00:50:16 INFO  request handled path=/api/orders status=200
+2026-07-14 01:01:11 INFO  request handled path=/api/users status=200
+2026-07-14 01:07:55 ERROR payment failed: card declined user_id=u103
+2026-07-14 01:11:12 INFO  request handled path=/health status=200
+2026-07-14 01:21:13 INFO  request handled path=/api/items status=200
+2026-07-14 01:26:55 ERROR payment failed: card declined user_id=u104
+2026-07-14 01:31:14 INFO  request handled path=/login status=200
+2026-07-14 01:41:15 INFO  request handled path=/api/orders status=200
+2026-07-14 01:45:55 ERROR payment failed: card declined user_id=u105
+2026-07-14 01:51:16 INFO  request handled path=/api/users status=200
+2026-07-14 02:02:11 INFO  request handled path=/health status=200
+2026-07-14 02:07:55 ERROR payment failed: card declined user_id=u106
+2026-07-14 02:12:12 INFO  request handled path=/api/items status=200
+2026-07-14 02:22:13 INFO  request handled path=/login status=200
+2026-07-14 02:26:55 ERROR payment failed: card declined user_id=u107
+2026-07-14 02:32:14 INFO  request handled path=/api/orders status=200
+2026-07-14 02:42:15 INFO  request handled path=/api/users status=200
+2026-07-14 02:52:16 INFO  request handled path=/health status=200
+2026-07-14 03:03:11 INFO  request handled path=/api/items status=200
+2026-07-14 03:07:55 ERROR payment failed: card declined user_id=u109
+2026-07-14 03:13:12 INFO  request handled path=/login status=200
+2026-07-14 03:23:13 INFO  request handled path=/api/orders status=200
+2026-07-14 03:26:55 ERROR payment failed: card declined user_id=u110
+2026-07-14 03:33:14 INFO  request handled path=/api/users status=200
+2026-07-14 03:43:15 INFO  request handled path=/health status=200
+2026-07-14 03:45:55 ERROR payment failed: card declined user_id=u111
+2026-07-14 03:53:16 INFO  request handled path=/api/items status=200
+2026-07-14 04:04:11 INFO  request handled path=/login status=200
+2026-07-14 04:07:55 ERROR payment failed: card declined user_id=u112
+2026-07-14 04:14:12 INFO  request handled path=/api/orders status=200
+2026-07-14 04:24:13 INFO  request handled path=/api/users status=200
+2026-07-14 04:26:55 ERROR payment failed: card declined user_id=u113
+2026-07-14 04:34:14 INFO  request handled path=/health status=200
+2026-07-14 04:44:15 INFO  request handled path=/api/items status=200
+2026-07-14 04:54:16 INFO  request handled path=/login status=200
+2026-07-14 05:05:11 INFO  request handled path=/api/orders status=200
+2026-07-14 05:07:55 ERROR payment failed: card declined user_id=u115
+2026-07-14 05:15:12 INFO  request handled path=/api/users status=200
+2026-07-14 05:25:13 INFO  request handled path=/health status=200
+2026-07-14 05:26:55 ERROR payment failed: card declined user_id=u116
+2026-07-14 05:35:14 INFO  request handled path=/api/items status=200
+2026-07-14 05:45:15 INFO  request handled path=/login status=200
+2026-07-14 05:45:55 ERROR payment failed: card declined user_id=u117
+2026-07-14 05:55:16 INFO  request handled path=/api/orders status=200
+2026-07-14 06:06:11 INFO  request handled path=/api/users status=200
+2026-07-14 06:07:55 ERROR payment failed: card declined user_id=u118
+2026-07-14 06:16:12 INFO  request handled path=/health status=200
+2026-07-14 06:26:13 INFO  request handled path=/api/items status=200
+2026-07-14 06:26:55 ERROR payment failed: card declined user_id=u119
+2026-07-14 06:36:14 INFO  request handled path=/login status=200
+2026-07-14 06:46:15 INFO  request handled path=/api/orders status=200
+2026-07-14 06:56:16 INFO  request handled path=/api/users status=200
+2026-07-14 07:00:11 INFO  request handled path=/health status=200
+2026-07-14 07:07:55 ERROR payment failed: card declined user_id=u121
+2026-07-14 07:10:12 INFO  request handled path=/api/items status=200
+2026-07-14 07:20:13 INFO  request handled path=/login status=200
+2026-07-14 07:26:55 ERROR payment failed: card declined user_id=u122
+2026-07-14 07:30:14 INFO  request handled path=/api/orders status=200
+2026-07-14 07:40:15 INFO  request handled path=/api/users status=200
+2026-07-14 07:45:55 ERROR payment failed: card declined user_id=u123
+2026-07-14 07:50:16 INFO  request handled path=/health status=200
+2026-07-14 08:01:11 INFO  request handled path=/api/items status=200
+2026-07-14 08:07:55 ERROR payment failed: card declined user_id=u124
+2026-07-14 08:11:12 INFO  request handled path=/login status=200
+2026-07-14 08:21:13 INFO  request handled path=/api/orders status=200
+2026-07-14 08:26:55 ERROR payment failed: card declined user_id=u125
+2026-07-14 08:31:14 INFO  request handled path=/api/users status=200
+2026-07-14 08:41:15 INFO  request handled path=/health status=200
+2026-07-14 08:51:16 INFO  request handled path=/api/items status=200
+2026-07-14 09:02:11 INFO  request handled path=/login status=200
+2026-07-14 09:07:55 ERROR payment failed: card declined user_id=u127
+2026-07-14 09:12:12 INFO  request handled path=/api/orders status=200
+2026-07-14 09:22:13 INFO  request handled path=/api/users status=200
+2026-07-14 09:26:55 ERROR payment failed: card declined user_id=u128
+2026-07-14 09:32:14 INFO  request handled path=/health status=200
+2026-07-14 09:33:42 WARN  slow query took 2.9s table=health_checks
+2026-07-14 09:42:15 INFO  request handled path=/api/items status=200
+2026-07-14 09:45:55 ERROR payment failed: card declined user_id=u129
+2026-07-14 09:52:16 INFO  request handled path=/login status=200
+2026-07-14 10:03:11 INFO  request handled path=/api/orders status=200
+2026-07-14 10:07:55 ERROR payment failed: card declined user_id=u130
+2026-07-14 10:13:12 INFO  request handled path=/api/users status=200
+2026-07-14 10:23:13 INFO  request handled path=/health status=200
+2026-07-14 10:26:55 ERROR payment failed: card declined user_id=u131
+2026-07-14 10:33:14 INFO  request handled path=/api/items status=200
+2026-07-14 10:33:42 WARN  slow query took 2.0s table=health_checks
+2026-07-14 10:43:15 INFO  request handled path=/login status=200
+2026-07-14 10:53:16 INFO  request handled path=/api/orders status=200
+2026-07-14 11:04:11 INFO  request handled path=/api/users status=200
+2026-07-14 11:07:55 ERROR payment failed: card declined user_id=u133
+2026-07-14 11:14:12 INFO  request handled path=/health status=200
+2026-07-14 11:24:13 INFO  request handled path=/api/items status=200
+2026-07-14 11:26:55 ERROR payment failed: card declined user_id=u134
+2026-07-14 11:33:42 WARN  slow query took 2.1s table=health_checks
+2026-07-14 11:34:14 INFO  request handled path=/login status=200
+2026-07-14 11:44:15 INFO  request handled path=/api/orders status=200
+2026-07-14 11:45:55 ERROR payment failed: card declined user_id=u135
+2026-07-14 11:54:16 INFO  request handled path=/api/users status=200
+2026-07-14 12:05:11 INFO  request handled path=/health status=200
+2026-07-14 12:07:55 ERROR payment failed: card declined user_id=u136
+2026-07-14 12:15:12 INFO  request handled path=/api/items status=200
+2026-07-14 12:25:13 INFO  request handled path=/login status=200
+2026-07-14 12:26:55 ERROR payment failed: card declined user_id=u137
+2026-07-14 12:33:42 WARN  slow query took 2.2s table=health_checks
+2026-07-14 12:35:14 INFO  request handled path=/api/orders status=200
+2026-07-14 12:45:15 INFO  request handled path=/api/users status=200
+2026-07-14 12:55:16 INFO  request handled path=/health status=200
+2026-07-14 13:06:11 INFO  request handled path=/api/items status=200
+2026-07-14 13:07:55 ERROR payment failed: card declined user_id=u139
+2026-07-14 13:16:12 INFO  request handled path=/login status=200
+2026-07-14 13:26:13 INFO  request handled path=/api/orders status=200
+2026-07-14 13:26:55 ERROR payment failed: card declined user_id=u140
+2026-07-14 13:33:42 WARN  slow query took 2.3s table=health_checks
+2026-07-14 13:36:14 INFO  request handled path=/api/users status=200
+2026-07-14 13:45:55 ERROR payment failed: card declined user_id=u141
+2026-07-14 13:46:15 INFO  request handled path=/health status=200
+2026-07-14 13:56:16 INFO  request handled path=/api/items status=200
+2026-07-14 14:00:11 INFO  request handled path=/login status=200
+2026-07-14 14:07:55 ERROR payment failed: card declined user_id=u142
+2026-07-14 14:10:12 INFO  request handled path=/api/orders status=200
+2026-07-14 14:20:13 INFO  request handled path=/api/users status=200
+2026-07-14 14:26:55 ERROR payment failed: card declined user_id=u143
+2026-07-14 14:30:14 INFO  request handled path=/health status=200
+2026-07-14 14:33:42 WARN  slow query took 2.4s table=health_checks
+2026-07-14 14:40:15 INFO  request handled path=/api/items status=200
+2026-07-14 14:50:16 INFO  request handled path=/login status=200
+2026-07-14 15:01:11 INFO  request handled path=/api/orders status=200
+2026-07-14 15:07:55 ERROR payment failed: card declined user_id=u145
+2026-07-14 15:11:12 INFO  request handled path=/api/users status=200
+2026-07-14 15:21:13 INFO  request handled path=/health status=200
+2026-07-14 15:26:55 ERROR payment failed: card declined user_id=u146
+2026-07-14 15:31:14 INFO  request handled path=/api/items status=200
+2026-07-14 15:33:42 WARN  slow query took 2.5s table=health_checks
+2026-07-14 15:41:15 INFO  request handled path=/login status=200
+2026-07-14 15:45:55 ERROR payment failed: card declined user_id=u147
+2026-07-14 15:51:16 INFO  request handled path=/api/orders status=200
+2026-07-14 16:02:11 INFO  request handled path=/api/users status=200
+2026-07-14 16:07:55 ERROR payment failed: card declined user_id=u148
+2026-07-14 16:12:12 INFO  request handled path=/health status=200
+2026-07-14 16:22:13 INFO  request handled path=/api/items status=200
+2026-07-14 16:26:55 ERROR payment failed: card declined user_id=u149
+2026-07-14 16:32:14 INFO  request handled path=/login status=200
+2026-07-14 16:33:42 WARN  slow query took 2.6s table=health_checks
+2026-07-14 16:42:15 INFO  request handled path=/api/orders status=200
+2026-07-14 16:52:16 INFO  request handled path=/api/users status=200
+2026-07-14 17:03:11 INFO  request handled path=/health status=200
+2026-07-14 17:07:55 ERROR payment failed: card declined user_id=u151
+2026-07-14 17:13:12 INFO  request handled path=/api/items status=200
+2026-07-14 17:23:13 INFO  request handled path=/login status=200
+2026-07-14 17:26:55 ERROR payment failed: card declined user_id=u152
+2026-07-14 17:33:14 INFO  request handled path=/api/orders status=200
+2026-07-14 17:33:42 WARN  slow query took 2.7s table=health_checks
+2026-07-14 17:43:15 INFO  request handled path=/api/users status=200
+2026-07-14 17:45:55 ERROR payment failed: card declined user_id=u153
+2026-07-14 17:53:16 INFO  request handled path=/health status=200
+2026-07-14 18:04:11 INFO  request handled path=/api/items status=200
+2026-07-14 18:07:55 ERROR payment failed: card declined user_id=u154
+2026-07-14 18:14:12 INFO  request handled path=/login status=200
+2026-07-14 18:24:13 INFO  request handled path=/api/orders status=200
+2026-07-14 18:26:55 ERROR payment failed: card declined user_id=u155
+2026-07-14 18:33:42 WARN  slow query took 2.8s table=health_checks
+2026-07-14 18:34:14 INFO  request handled path=/api/users status=200
+2026-07-14 18:44:15 INFO  request handled path=/health status=200
+2026-07-14 18:54:16 INFO  request handled path=/api/items status=200
+2026-07-14 19:05:11 INFO  request handled path=/login status=200
+2026-07-14 19:07:55 ERROR payment failed: card declined user_id=u157
+2026-07-14 19:15:12 INFO  request handled path=/api/orders status=200
+2026-07-14 19:25:13 INFO  request handled path=/api/users status=200
+2026-07-14 19:26:55 ERROR payment failed: card declined user_id=u158
+2026-07-14 19:35:14 INFO  request handled path=/health status=200
+2026-07-14 19:45:15 INFO  request handled path=/api/items status=200
+2026-07-14 19:45:55 ERROR payment failed: card declined user_id=u159
+2026-07-14 19:55:16 INFO  request handled path=/login status=200
+2026-07-14 20:06:11 INFO  request handled path=/api/orders status=200
+2026-07-14 20:07:55 ERROR payment failed: card declined user_id=u160
+2026-07-14 20:16:12 INFO  request handled path=/api/users status=200
+2026-07-14 20:26:13 INFO  request handled path=/health status=200
+2026-07-14 20:26:55 ERROR payment failed: card declined user_id=u161
+2026-07-14 20:36:14 INFO  request handled path=/api/items status=200
+2026-07-14 20:46:15 INFO  request handled path=/login status=200
+2026-07-14 20:56:16 INFO  request handled path=/api/orders status=200
+2026-07-14 21:00:11 INFO  request handled path=/api/users status=200
+2026-07-14 21:07:55 ERROR payment failed: card declined user_id=u163
+2026-07-14 21:10:12 INFO  request handled path=/health status=200
+2026-07-14 21:20:13 INFO  request handled path=/api/items status=200
+2026-07-14 21:26:55 ERROR payment failed: card declined user_id=u164
+2026-07-14 21:30:14 INFO  request handled path=/login status=200
+2026-07-14 21:40:15 INFO  request handled path=/api/orders status=200
+2026-07-14 21:45:55 ERROR payment failed: card declined user_id=u165
+2026-07-14 21:50:16 INFO  request handled path=/api/users status=200
+2026-07-14 22:01:11 INFO  request handled path=/health status=200
+2026-07-14 22:07:55 ERROR payment failed: card declined user_id=u166
+2026-07-14 22:11:12 INFO  request handled path=/api/items status=200
+2026-07-14 22:21:13 INFO  request handled path=/login status=200
+2026-07-14 22:26:55 ERROR payment failed: card declined user_id=u167
+2026-07-14 22:31:14 INFO  request handled path=/api/orders status=200
+2026-07-14 22:41:15 INFO  request handled path=/api/users status=200
+2026-07-14 22:51:16 INFO  request handled path=/health status=200
+2026-07-14 23:02:11 INFO  request handled path=/api/items status=200
+2026-07-14 23:07:55 ERROR payment failed: card declined user_id=u169
+2026-07-14 23:12:12 INFO  request handled path=/login status=200
+2026-07-14 23:22:13 INFO  request handled path=/api/orders status=200
+2026-07-14 23:26:55 ERROR payment failed: card declined user_id=u170
+2026-07-14 23:32:14 INFO  request handled path=/api/users status=200
+2026-07-14 23:42:15 INFO  request handled path=/health status=200
+2026-07-14 23:45:55 ERROR payment failed: card declined user_id=u171
+2026-07-14 23:52:16 INFO  request handled path=/api/items status=200
+2026-07-15 00:00:11 INFO  request handled path=/api/orders status=200
+2026-07-15 00:07:55 ERROR payment failed: card declined user_id=u100
+2026-07-15 00:10:12 INFO  request handled path=/api/users status=200
+2026-07-15 00:20:13 INFO  request handled path=/health status=200
+2026-07-15 00:26:55 ERROR payment failed: card declined user_id=u101
+2026-07-15 00:30:14 INFO  request handled path=/api/items status=200
+2026-07-15 00:40:15 INFO  request handled path=/login status=200
+2026-07-15 00:50:16 INFO  request handled path=/api/orders status=200
+2026-07-15 01:01:11 INFO  request handled path=/api/users status=200
+2026-07-15 01:07:55 ERROR payment failed: card declined user_id=u103
+2026-07-15 01:11:12 INFO  request handled path=/health status=200
+2026-07-15 01:21:13 INFO  request handled path=/api/items status=200
+2026-07-15 01:26:55 ERROR payment failed: card declined user_id=u104
+2026-07-15 01:31:14 INFO  request handled path=/login status=200
+2026-07-15 01:41:15 INFO  request handled path=/api/orders status=200
+2026-07-15 01:45:55 ERROR payment failed: card declined user_id=u105
+2026-07-15 01:51:16 INFO  request handled path=/api/users status=200
+2026-07-15 02:02:11 INFO  request handled path=/health status=200
+2026-07-15 02:07:55 ERROR payment failed: card declined user_id=u106
+2026-07-15 02:12:12 INFO  request handled path=/api/items status=200
+2026-07-15 02:22:13 INFO  request handled path=/login status=200
+2026-07-15 02:26:55 ERROR payment failed: card declined user_id=u107
+2026-07-15 02:32:14 INFO  request handled path=/api/orders status=200
+2026-07-15 02:42:15 INFO  request handled path=/api/users status=200
+2026-07-15 02:52:16 INFO  request handled path=/health status=200
+2026-07-15 03:03:11 INFO  request handled path=/api/items status=200
+2026-07-15 03:07:55 ERROR payment failed: card declined user_id=u109
+2026-07-15 03:13:12 INFO  request handled path=/login status=200
+2026-07-15 03:23:13 INFO  request handled path=/api/orders status=200
+2026-07-15 03:26:55 ERROR payment failed: card declined user_id=u110
+2026-07-15 03:33:14 INFO  request handled path=/api/users status=200
+2026-07-15 03:43:15 INFO  request handled path=/health status=200
+2026-07-15 03:45:55 ERROR payment failed: card declined user_id=u111
+2026-07-15 03:53:16 INFO  request handled path=/api/items status=200
+2026-07-15 04:04:11 INFO  request handled path=/login status=200
+2026-07-15 04:07:55 ERROR payment failed: card declined user_id=u112
+2026-07-15 04:14:12 INFO  request handled path=/api/orders status=200
+2026-07-15 04:24:13 INFO  request handled path=/api/users status=200
+2026-07-15 04:26:55 ERROR payment failed: card declined user_id=u113
+2026-07-15 04:34:14 INFO  request handled path=/health status=200
+2026-07-15 04:44:15 INFO  request handled path=/api/items status=200
+2026-07-15 04:54:16 INFO  request handled path=/login status=200
+2026-07-15 05:05:11 INFO  request handled path=/api/orders status=200
+2026-07-15 05:07:55 ERROR payment failed: card declined user_id=u115
+2026-07-15 05:15:12 INFO  request handled path=/api/users status=200
+2026-07-15 05:25:13 INFO  request handled path=/health status=200
+2026-07-15 05:26:55 ERROR payment failed: card declined user_id=u116
+2026-07-15 05:35:14 INFO  request handled path=/api/items status=200
+2026-07-15 05:45:15 INFO  request handled path=/login status=200
+2026-07-15 05:45:55 ERROR payment failed: card declined user_id=u117
+2026-07-15 05:55:16 INFO  request handled path=/api/orders status=200
+2026-07-15 06:06:11 INFO  request handled path=/api/users status=200
+2026-07-15 06:07:55 ERROR payment failed: card declined user_id=u118
+2026-07-15 06:16:12 INFO  request handled path=/health status=200
+2026-07-15 06:26:13 INFO  request handled path=/api/items status=200
+2026-07-15 06:26:55 ERROR payment failed: card declined user_id=u119
+2026-07-15 06:36:14 INFO  request handled path=/login status=200
+2026-07-15 06:46:15 INFO  request handled path=/api/orders status=200
+2026-07-15 06:56:16 INFO  request handled path=/api/users status=200
+2026-07-15 07:00:11 INFO  request handled path=/health status=200
+2026-07-15 07:07:55 ERROR payment failed: card declined user_id=u121
+2026-07-15 07:10:12 INFO  request handled path=/api/items status=200
+2026-07-15 07:20:13 INFO  request handled path=/login status=200
+2026-07-15 07:26:55 ERROR payment failed: card declined user_id=u122
+2026-07-15 07:30:14 INFO  request handled path=/api/orders status=200
+2026-07-15 07:40:15 INFO  request handled path=/api/users status=200
+2026-07-15 07:45:55 ERROR payment failed: card declined user_id=u123
+2026-07-15 07:50:16 INFO  request handled path=/health status=200
+2026-07-15 08:01:11 INFO  request handled path=/api/items status=200
+2026-07-15 08:07:55 ERROR payment failed: card declined user_id=u124
+2026-07-15 08:11:12 INFO  request handled path=/login status=200
+2026-07-15 08:21:13 INFO  request handled path=/api/orders status=200
+2026-07-15 08:26:55 ERROR payment failed: card declined user_id=u125
+2026-07-15 08:31:14 INFO  request handled path=/api/users status=200
+2026-07-15 08:41:15 INFO  request handled path=/health status=200
+2026-07-15 08:51:16 INFO  request handled path=/api/items status=200
+2026-07-15 09:02:11 INFO  request handled path=/login status=200
+2026-07-15 09:07:55 ERROR payment failed: card declined user_id=u127
+2026-07-15 09:12:12 INFO  request handled path=/api/orders status=200
+2026-07-15 09:22:13 INFO  request handled path=/api/users status=200
+2026-07-15 09:26:55 ERROR payment failed: card declined user_id=u128
+2026-07-15 09:32:14 INFO  request handled path=/health status=200
+2026-07-15 09:33:42 WARN  slow query took 2.9s table=health_checks
+2026-07-15 09:42:15 INFO  request handled path=/api/items status=200
+2026-07-15 09:45:55 ERROR payment failed: card declined user_id=u129
+2026-07-15 09:52:16 INFO  request handled path=/login status=200
+2026-07-15 10:03:11 INFO  request handled path=/api/orders status=200
+2026-07-15 10:07:55 ERROR payment failed: card declined user_id=u130
+2026-07-15 10:13:12 INFO  request handled path=/api/users status=200
+2026-07-15 10:23:13 INFO  request handled path=/health status=200
+2026-07-15 10:26:55 ERROR payment failed: card declined user_id=u131
+2026-07-15 10:33:14 INFO  request handled path=/api/items status=200
+2026-07-15 10:33:42 WARN  slow query took 2.0s table=health_checks
+2026-07-15 10:43:15 INFO  request handled path=/login status=200
+2026-07-15 10:53:16 INFO  request handled path=/api/orders status=200
+2026-07-15 11:04:11 INFO  request handled path=/api/users status=200
+2026-07-15 11:07:55 ERROR payment failed: card declined user_id=u133
+2026-07-15 11:14:12 INFO  request handled path=/health status=200
+2026-07-15 11:24:13 INFO  request handled path=/api/items status=200
+2026-07-15 11:26:55 ERROR payment failed: card declined user_id=u134
+2026-07-15 11:33:42 WARN  slow query took 2.1s table=health_checks
+2026-07-15 11:34:14 INFO  request handled path=/login status=200
+2026-07-15 11:44:15 INFO  request handled path=/api/orders status=200
+2026-07-15 11:45:55 ERROR payment failed: card declined user_id=u135
+2026-07-15 11:54:16 INFO  request handled path=/api/users status=200
+2026-07-15 12:05:11 INFO  request handled path=/health status=200
+2026-07-15 12:07:55 ERROR payment failed: card declined user_id=u136
+2026-07-15 12:15:12 INFO  request handled path=/api/items status=200
+2026-07-15 12:25:13 INFO  request handled path=/login status=200
+2026-07-15 12:26:55 ERROR payment failed: card declined user_id=u137
+2026-07-15 12:33:42 WARN  slow query took 2.2s table=health_checks
+2026-07-15 12:35:14 INFO  request handled path=/api/orders status=200
+2026-07-15 12:45:15 INFO  request handled path=/api/users status=200
+2026-07-15 12:55:16 INFO  request handled path=/health status=200
+2026-07-15 13:06:11 INFO  request handled path=/api/items status=200
+2026-07-15 13:07:55 ERROR payment failed: card declined user_id=u139
+2026-07-15 13:16:12 INFO  request handled path=/login status=200
+2026-07-15 13:26:13 INFO  request handled path=/api/orders status=200
+2026-07-15 13:26:55 ERROR payment failed: card declined user_id=u140
+2026-07-15 13:33:42 WARN  slow query took 2.3s table=health_checks
+2026-07-15 13:36:14 INFO  request handled path=/api/users status=200
+2026-07-15 13:45:55 ERROR payment failed: card declined user_id=u141
+2026-07-15 13:46:15 INFO  request handled path=/health status=200
+2026-07-15 13:56:16 INFO  request handled path=/api/items status=200
+2026-07-15 14:00:00 ERROR db connection timeout host=db-01 retry=0
+2026-07-15 14:00:11 INFO  request handled path=/login status=200
+2026-07-15 14:02:58 ERROR db connection timeout host=db-01 retry=1
+2026-07-15 14:03:57 ERROR db connection timeout host=db-01 retry=0
+2026-07-15 14:04:56 ERROR db connection timeout host=db-01 retry=2
+2026-07-15 14:07:53 ERROR db connection timeout host=db-01 retry=2
+2026-07-15 14:07:55 ERROR payment failed: card declined user_id=u142
+2026-07-15 14:08:52 ERROR db connection timeout host=db-01 retry=1
+2026-07-15 14:09:51 ERROR db connection timeout host=db-01 retry=0
+2026-07-15 14:10:12 INFO  request handled path=/api/orders status=200
+2026-07-15 14:11:49 ERROR db connection timeout host=db-01 retry=1
+2026-07-15 14:12:48 ERROR db connection timeout host=db-01 retry=0
+2026-07-15 14:13:47 ERROR db connection timeout host=db-01 retry=2
+2026-07-15 14:16:44 ERROR db connection timeout host=db-01 retry=2
+2026-07-15 14:17:43 ERROR db connection timeout host=db-01 retry=1
+2026-07-15 14:18:42 ERROR db connection timeout host=db-01 retry=0
+2026-07-15 14:20:13 INFO  request handled path=/api/users status=200
+2026-07-15 14:20:40 ERROR db connection timeout host=db-01 retry=1
+2026-07-15 14:21:39 ERROR db connection timeout host=db-01 retry=0
+2026-07-15 14:22:38 ERROR db connection timeout host=db-01 retry=2
+2026-07-15 14:23:37 ERROR db connection timeout host=db-01 retry=1
+2026-07-15 14:25:35 ERROR db connection timeout host=db-01 retry=2
+2026-07-15 14:26:34 ERROR db connection timeout host=db-01 retry=1
+2026-07-15 14:26:55 ERROR payment failed: card declined user_id=u143
+2026-07-15 14:27:33 ERROR db connection timeout host=db-01 retry=0
+2026-07-15 14:30:14 INFO  request handled path=/health status=200
+2026-07-15 14:30:30 ERROR db connection timeout host=db-01 retry=0
+2026-07-15 14:31:29 ERROR db connection timeout host=db-01 retry=2
+2026-07-15 14:32:28 ERROR db connection timeout host=db-01 retry=1
+2026-07-15 14:33:42 WARN  slow query took 2.4s table=health_checks
+2026-07-15 14:34:26 ERROR db connection timeout host=db-01 retry=2
+2026-07-15 14:35:25 ERROR db connection timeout host=db-01 retry=1
+2026-07-15 14:36:24 ERROR db connection timeout host=db-01 retry=0
+2026-07-15 14:39:21 ERROR db connection timeout host=db-01 retry=0
+2026-07-15 14:40:15 INFO  request handled path=/api/items status=200
+2026-07-15 14:40:20 ERROR db connection timeout host=db-01 retry=2
+2026-07-15 14:41:19 ERROR db connection timeout host=db-01 retry=1
+2026-07-15 14:43:17 ERROR db connection timeout host=db-01 retry=2
+2026-07-15 14:44:16 ERROR db connection timeout host=db-01 retry=1
+2026-07-15 14:45:15 ERROR db connection timeout host=db-01 retry=0
+2026-07-15 14:46:14 ERROR db connection timeout host=db-01 retry=2
+2026-07-15 14:48:12 ERROR db connection timeout host=db-01 retry=0
+2026-07-15 14:49:11 ERROR db connection timeout host=db-01 retry=2
+2026-07-15 14:50:10 ERROR db connection timeout host=db-01 retry=1
+2026-07-15 14:50:16 INFO  request handled path=/login status=200
+2026-07-15 14:53:07 ERROR db connection timeout host=db-01 retry=1
+2026-07-15 14:54:06 ERROR db connection timeout host=db-01 retry=0
+2026-07-15 14:55:05 ERROR db connection timeout host=db-01 retry=2
+2026-07-15 14:57:03 ERROR db connection timeout host=db-01 retry=0
+2026-07-15 14:58:02 ERROR db connection timeout host=db-01 retry=2
+2026-07-15 14:59:01 ERROR db connection timeout host=db-01 retry=1
+Traceback (most recent call last):
+  File "app.py", line 42, in handle_payment
+ConnectionError: [Errno 111] Connection refused
+
+2026-07-15 15:01:11 INFO  request handled path=/api/orders status=200
+2026-07-15 15:07:55 ERROR payment failed: card declined user_id=u145
+2026-07-15 15:11:12 INFO  request handled path=/api/users status=200
+2026-07-15 15:21:13 INFO  request handled path=/health status=200
+2026-07-15 15:26:55 ERROR payment failed: card declined user_id=u146
+2026-07-15 15:31:14 INFO  request handled path=/api/items status=200
+2026-07-15 15:33:42 WARN  slow query took 2.5s table=health_checks
+2026-07-15 15:41:15 INFO  request handled path=/login status=200
+2026-07-15 15:45:55 ERROR payment failed: card declined user_id=u147
+2026-07-15 15:51:16 INFO  request handled path=/api/orders status=200
+2026-07-15 16:02:11 INFO  request handled path=/api/users status=200
+2026-07-15 16:07:55 ERROR payment failed: card declined user_id=u148
+2026-07-15 16:12:12 INFO  request handled path=/health status=200
+2026-07-15 16:22:13 INFO  request handled path=/api/items status=200
+2026-07-15 16:26:55 ERROR payment failed: card declined user_id=u149
+2026-07-15 16:32:14 INFO  request handled path=/login status=200
+2026-07-15 16:33:42 WARN  slow query took 2.6s table=health_checks
+2026-07-15 16:42:15 INFO  request handled path=/api/orders status=200
+2026-07-15 16:52:16 INFO  request handled path=/api/users status=200
+2026-07-15 17:03:11 INFO  request handled path=/health status=200
+2026-07-15 17:07:55 ERROR payment failed: card declined user_id=u151
+2026-07-15 17:13:12 INFO  request handled path=/api/items status=200
+2026-07-15 17:23:13 INFO  request handled path=/login status=200
+2026-07-15 17:26:55 ERROR payment failed: card declined user_id=u152
+2026-07-15 17:33:14 INFO  request handled path=/api/orders status=200
+2026-07-15 17:33:42 WARN  slow query took 2.7s table=health_checks
+2026-07-15 17:43:15 INFO  request handled path=/api/users status=200
+2026-07-15 17:45:55 ERROR payment failed: card declined user_id=u153
+2026-07-15 17:53:16 INFO  request handled path=/health status=200
+2026-07-15 18:04:11 INFO  request handled path=/api/items status=200
+2026-07-15 18:07:55 ERROR payment failed: card declined user_id=u154
+2026-07-15 18:14:12 INFO  request handled path=/login status=200
+2026-07-15 18:24:13 INFO  request handled path=/api/orders status=200
+2026-07-15 18:26:55 ERROR payment failed: card declined user_id=u155
+2026-07-15 18:33:42 WARN  slow query took 2.8s table=health_checks
+2026-07-15 18:34:14 INFO  request handled path=/api/users status=200
+2026-07-15 18:44:15 INFO  request handled path=/health status=200
+2026-07-15 18:54:16 INFO  request handled path=/api/items status=200
+2026-07-15 19:05:11 INFO  request handled path=/login status=200
+2026-07-15 19:07:55 ERROR payment failed: card declined user_id=u157
+2026-07-15 19:15:12 INFO  request handled path=/api/orders status=200
+2026-07-15 19:25:13 INFO  request handled path=/api/users status=200
+2026-07-15 19:26:55 ERROR payment failed: card declined user_id=u158
+2026-07-15 19:35:14 INFO  request handled path=/health status=200
+2026-07-15 19:45:15 INFO  request handled path=/api/items status=200
+2026-07-15 19:45:55 ERROR payment failed: card declined user_id=u159
+2026-07-15 19:55:16 INFO  request handled path=/login status=200
+2026-07-15 20:06:11 INFO  request handled path=/api/orders status=200
+2026-07-15 20:07:55 ERROR payment failed: card declined user_id=u160
+2026-07-15 20:16:12 INFO  request handled path=/api/users status=200
+2026-07-15 20:26:13 INFO  request handled path=/health status=200
+2026-07-15 20:26:55 ERROR payment failed: card declined user_id=u161
+2026-07-15 20:36:14 INFO  request handled path=/api/items status=200
+2026-07-15 20:46:15 INFO  request handled path=/login status=200
+2026-07-15 20:56:16 INFO  request handled path=/api/orders status=200
+2026-07-15 21:00:11 INFO  request handled path=/api/users status=200
+2026-07-15 21:07:55 ERROR payment failed: card declined user_id=u163
+2026-07-15 21:10:12 INFO  request handled path=/health status=200
+2026-07-15 21:20:13 INFO  request handled path=/api/items status=200
+2026-07-15 21:26:55 ERROR payment failed: card declined user_id=u164
+2026-07-15 21:30:14 INFO  request handled path=/login status=200
+2026-07-15 21:40:15 INFO  request handled path=/api/orders status=200
+2026-07-15 21:45:55 ERROR payment failed: card declined user_id=u165
+2026-07-15 21:50:16 INFO  request handled path=/api/users status=200
+2026-07-15 22:01:11 INFO  request handled path=/health status=200
+2026-07-15 22:07:55 ERROR payment failed: card declined user_id=u166
+2026-07-15 22:11:12 INFO  request handled path=/api/items status=200
+2026-07-15 22:21:13 INFO  request handled path=/login status=200
+2026-07-15 22:26:55 ERROR payment failed: card declined user_id=u167
+2026-07-15 22:31:14 INFO  request handled path=/api/orders status=200
+2026-07-15 22:41:15 INFO  request handled path=/api/users status=200
+2026-07-15 22:51:16 INFO  request handled path=/health status=200
+2026-07-15 23:02:11 INFO  request handled path=/api/items status=200
+2026-07-15 23:07:55 ERROR payment failed: card declined user_id=u169
+2026-07-15 23:12:12 INFO  request handled path=/login status=200
+2026-07-15 23:22:13 INFO  request handled path=/api/orders status=200
+2026-07-15 23:26:55 ERROR payment failed: card declined user_id=u170
+2026-07-15 23:32:14 INFO  request handled path=/api/users status=200
+2026-07-15 23:42:15 INFO  request handled path=/health status=200
+2026-07-15 23:45:55 ERROR payment failed: card declined user_id=u171
+2026-07-15 23:52:16 INFO  request handled path=/api/items status=200
+2026-07-15 23:59:59 ERROR shutdown requested by ops
