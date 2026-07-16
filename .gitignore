@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# venv（プロジェクトごとの道具箱。コミットしない）
+.venv/
+venv/
+
+# 秘密は絶対にコミットしない（課題2以降で扱う）
+.env
+*.env
+secret*
+*.key
+*.pem
+
+# エディタ・OS
+.vscode/
+.idea/
+.DS_Store
+
+# 課題が生成する成果物（点検結果のJSONなど。必要なら各課題で調整）
+*.local.json
+output/

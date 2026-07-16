@@ -1,0 +1,19 @@
+name: 自動採点
+
+# push と Pull Request のたびに、各課題のテストを走らせる。
+# 追加のインストールは不要（Python 標準ライブラリの unittest だけ）。秘密も使わない。
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  grade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: 課題1 ヘルスチェックCLI
+        run: python -m unittest discover -s projects/01-healthcheck -v
