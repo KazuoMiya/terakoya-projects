@@ -1,11 +1,10 @@
 name: 自動採点
 
-# push と Pull Request のたびに、各課題のテストを走らせる。
+# Pull Request のたびに、各課題のテストを走らせる（採点は「PRが緑になる」で確認する）。
+# main への push では走らせない——テンプレートのコピー直後に赤い×が出て驚かせないため。
 # 追加のインストールは不要（Python 標準ライブラリの unittest だけ）。秘密も使わない。
 on:
   pull_request:
-  push:
-    branches: [main]
 
 jobs:
   grade:
