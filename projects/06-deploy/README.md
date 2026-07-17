@@ -120,7 +120,7 @@ journalctl --disk-usage                     # journald も自分で容量を管�
 
 **バックアップ → リストア演習（この課題の山場）**:
 ```bash
-bash deploy/backup.sh projects/05-web-api/api.db ~/backups
+bash projects/06-deploy/deploy/backup.sh projects/05-web-api/api.db ~/backups
 ```
 そして**本当に壊して、本当に戻す**:
 
