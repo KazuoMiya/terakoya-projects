@@ -1,0 +1,14 @@
+# 課題5で使う外部パッケージ。venv を有効にしてから:
+#   pip install -r requirements.txt
+
+# FastAPI = Web APIの骨組み。型を書くと、検証とAPIの説明書（/docs）がついてくる。
+fastapi>=0.110,<1
+
+# uvicorn = 開発用のWebサーバー。uvicorn app:app --reload --app-dir src で起動する。
+uvicorn>=0.29,<1
+
+# httpx = テスト道具 TestClient が内部で使う（サーバーを起動せずにAPIを呼べる）。
+httpx>=0.27,<1
+
+# .env（API_KEY など）を読み込む道具。課題2と同じ。
+python-dotenv>=1.0,<2
