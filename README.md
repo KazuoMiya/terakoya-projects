@@ -41,7 +41,7 @@
 | 3 | `projects/03-log-analysis/` | ログ解析と通知 | あり | 公開中 |
 | 4 | `projects/04-config-diff/` | 構成差分と変更系ツール | あり | 公開中 |
 | 5 | `projects/05-web-api/` | 点検結果管理API（FastAPI） | あり | 公開中 |
-| 6 | `projects/06-deploy/` | デプロイ（動かす・守る） | なし | 準備中 |
+| 6 | `projects/06-deploy/` | デプロイ（動かす・守る） | なし | 公開中 |
 | 7 | `projects/07-monitoring/` | 統合監視システム | 一部 | 準備中 |
 
 準備中の課題は、コースの進行に合わせて順次このリポジトリに追加される。

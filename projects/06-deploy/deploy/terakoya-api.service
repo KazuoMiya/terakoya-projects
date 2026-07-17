@@ -1,0 +1,40 @@
+# 課題6: systemd ユニットファイル（穴埋めテンプレート）
+#
+# <あなたのユーザー名> を自分のものに置き換えてから、次の場所に置く:
+#   sudo cp deploy/terakoya-api.service /etc/systemd/system/terakoya-api.service
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now terakoya-api
+#
+# ポイントは3つ。
+#   1. パスは全部「絶対パス」。systemd の世界にはあなたの venv も cd も無い
+#      （課題3の cron で踏んだ罠と同じだ）。
+#   2. --host 127.0.0.1 でローカルにだけ待ち受ける。外への窓口は Nginx に任せる。
+#   3. 秘密（API_KEY）は EnvironmentFile で .env から読む。ここに直書きしない。
+#      注意: .env に「行内コメント」を書かないこと（API_KEY=x  # メモ、のような形）。
+#      python-dotenv は # 以降を剥がすが、systemd は値の一部として読む——
+#      開発では動くのに systemd 経由でだけ認証が壊れる、という嫌な差になる。
+#
+# ★パスについて: このテンプレは「ホームに terakoya-projects という名前で clone した」
+#   前提で書いてある。名前が違う場合は、下のパス3か所をすべて実際のパスに直すこと
+#  （ls で実在を確かめてから）。パス間違いは 203/EXEC エラーの一番の原因だ。
+
+[Unit]
+Description=Terakoya 点検結果管理API（課題5で作ったもの）
+# ネットワークが用意できてから起動する
+After=network.target
+
+[Service]
+# root で動かさない。普段使いのユーザーで十分だ（最小権限）
+User=<あなたのユーザー名>
+WorkingDirectory=/home/<あなたのユーザー名>/terakoya-projects/projects/05-web-api
+# 秘密は .env から（このファイルに直書きしない）
+EnvironmentFile=/home/<あなたのユーザー名>/terakoya-projects/projects/05-web-api/.env
+# venv の中の uvicorn を「絶対パス」で指す。--reload は本番では使わない
+ExecStart=/home/<あなたのユーザー名>/terakoya-projects/.venv/bin/uvicorn app:app --app-dir src --host 127.0.0.1 --port 8000
+# 落ちたら自動で再起動する（常駐の要）
+Restart=on-failure
+RestartSec=3
+
+[Install]
+# 「サーバー起動時に自動で立ち上がる」の合図。enable で有効になる
+WantedBy=multi-user.target
