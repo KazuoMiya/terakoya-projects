@@ -1,0 +1,8 @@
+# 最終課題で使う外部パッケージ。venv を有効にしてから:
+#   pip install -r requirements.txt
+
+# HTTPチェックと、課題5のAPIへの記録に使う（課題3の通知でも使った）。
+requests>=2.31,<3
+
+# .env（API_KEY）を読み込む道具。課題2と同じ。
+python-dotenv>=1.0,<2

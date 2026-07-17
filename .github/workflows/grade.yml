@@ -33,3 +33,8 @@ jobs:
         run: pip install -r projects/05-web-api/requirements.txt
       - name: 課題5 点検結果管理API
         run: python -m unittest discover -s projects/05-web-api -v
+
+      - name: 最終課題 依存の準備
+        run: pip install -r projects/07-monitoring/requirements.txt
+      - name: 最終課題 統合監視
+        run: python -m unittest discover -s projects/07-monitoring -v
