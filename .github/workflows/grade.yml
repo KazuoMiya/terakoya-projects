@@ -27,3 +27,9 @@ jobs:
 
       - name: 課題4 構成差分
         run: python -m unittest discover -s projects/04-config-diff -v
+
+      # 課題5だけは外部パッケージ（FastAPI）が要る。学習者のコピーでも同じ手順で入る。
+      - name: 課題5 依存の準備
+        run: pip install -r projects/05-web-api/requirements.txt
+      - name: 課題5 点検結果管理API
+        run: python -m unittest discover -s projects/05-web-api -v
