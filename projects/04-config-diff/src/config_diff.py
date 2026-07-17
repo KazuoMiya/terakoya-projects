@@ -1,23 +1,16 @@
 #!/usr/bin/env python3
-"""課題4: 構成情報の収集と差分検知（あなたが実装する）。
+"""課題4: 構成情報の収集と差分検知 — 参考実装（solutions ブランチ）。
 
-「気づいたら設定が変わっていた」をなくす道具だ。サーバーの構成
-（パッケージ・サービス・ポート・ユーザー・cron）をJSONに書き出し、
-前回のスナップショットと比べて、**変わったところだけ**を報告する。
-
-この課題の心臓は「**差分ゼロが正常**」という考え方だ。
-毎日レポートが差分だらけなら、誰も読まなくなる（課題3のアラート疲れと同じ）。
-だから「揺れて当然の値」は比較の前に落とす——それが normalize の仕事だ。
-
-自動採点が見るのは、下の純関数4つ。収集（subprocessでOSコマンド）は
-環境で結果が変わるので採点しない（サンプルと自己チェックで確かめる）。
-
-状態と終了コードは課題1と同じ:
-    差分なし="OK"=0  差分あり="WARNING"=1  スナップショットが読めない="UNKNOWN"=3
+これは「答え」だ。詰まったときの安全網として置いてある。
+まず自分で書いてみて、どうしても進めないところだけ覗くのがおすすめ。
 """
+import argparse
+import json
+import logging
+import subprocess
 import sys
 
-# ── 課題1の道具（配ってある。作り直さない）─────────────────────────
+log = logging.getLogger("config_diff")
 
 _SEVERITY = {"OK": 0, "UNKNOWN": 1, "WARNING": 2, "CRITICAL": 3}
 
@@ -32,83 +25,200 @@ def status_to_exit_code(status):
     return {"OK": 0, "WARNING": 1, "CRITICAL": 2, "UNKNOWN": 3}.get(status, 3)
 
 
-# ── 純関数（★TODO★：ここを実装する。自動採点の対象）─────────────────
+# ── 純関数（自動採点の対象）──────────────────────────────────────────
 
-# 「揺れて当然」で、差分として報告しても意味が無いキー。
 VOLATILE_KEYS = {"collected_at"}
 
 
 def normalize(snapshot):
-    """スナップショット（辞書）を、比較できる形に整えて**新しい辞書**で返す。
-
-    1. VOLATILE_KEYS にあるキーを取り除く
-       （収集した時刻は毎回違って当然。差分に混ぜると毎日「変化あり」になる）
-    2. 値がリストのものは、ソートしたコピーにする
-       （収集コマンドの出力順は揺れることがある。順序の揺れは差分ではない）
-    3. 引数の snapshot 自体は変更しない（呼び出し元を驚かせない）
-
-    例: {"collected_at": "…", "users": ["root", "deploy"]}
-        → {"users": ["deploy", "root"]}
-    """
-    raise NotImplementedError("normalize を実装しよう（課題4の道しるべ参照）")
+    """揺れる値を落とし、リストをソートした新しい辞書を返す。元は変更しない。"""
+    out = {}
+    for key, value in snapshot.items():
+        if key in VOLATILE_KEYS:
+            continue
+        out[key] = sorted(value) if isinstance(value, list) else value
+    return out
 
 
 def diff_config(prev, curr):
-    """正規化済みのスナップショット同士を比べ、差分を返す。
-
-    戻り値は {"added": {}, "removed": {}, "changed": {}} の形。
-    - added:   curr にだけあるキー（値ごと）
-    - removed: prev にだけあるキー（値ごと）
-    - changed: 両方にあって値が違うキー。ただし——
-        * 両方の値がリストなら、丸ごとでなく**中身**を比べて
-          {"added": [増えた項目], "removed": [減った項目]} を入れる
-          （「packagesが変わった」ではなく「opensslのこの版が増え、この版が減った」
-           と言えるのが、使えるレポートだ）
-        * リスト以外は {"before": 前の値, "after": 今の値}
-    - 差分が無ければ、3つとも空の辞書。
-
-    例: prev={"ports": [22, 80]},  curr={"ports": [22, 8080]}
-        → {"added": {}, "removed": {},
-           "changed": {"ports": {"added": [8080], "removed": [80]}}}
-    """
-    raise NotImplementedError("diff_config を実装しよう")
+    """正規化済みスナップショット同士の差分。リストは中身で比べる。"""
+    diff = {"added": {}, "removed": {}, "changed": {}}
+    for key in curr:
+        if key not in prev:
+            diff["added"][key] = curr[key]
+    for key in prev:
+        if key not in curr:
+            diff["removed"][key] = prev[key]
+    for key in curr:
+        if key not in prev or prev[key] == curr[key]:
+            continue
+        if isinstance(prev[key], list) and isinstance(curr[key], list):
+            prev_set, curr_set = set(prev[key]), set(curr[key])
+            diff["changed"][key] = {
+                "added": sorted(curr_set - prev_set),
+                "removed": sorted(prev_set - curr_set),
+            }
+        else:
+            diff["changed"][key] = {"before": prev[key], "after": curr[key]}
+    return diff
 
 
 def judge_diff(diff):
-    """差分から全体の状態を決める。
-
-    - added / removed / changed がすべて空 → "OK"（差分ゼロが正常）
-    - 1つでも中身があれば → "WARNING"
-
-    WARNING止まりなのには理由がある。差分は「変わった」という**事実の検知**であって、
-    それが正しい変更か事故かは、この関数には分からない。判断するのは人間だ
-    （課題2の鉄則「検知と対処を分ける」と同じ思想）。
-    """
-    raise NotImplementedError("judge_diff を実装しよう")
+    """差分ゼロが正常。何かあれば WARNING（善悪の判断は人間の仕事）。"""
+    if diff["added"] or diff["removed"] or diff["changed"]:
+        return "WARNING"
+    return "OK"
 
 
 def select_old_files(entries, days, now_epoch):
-    """【発展課題用】「消してよい候補」を選ぶ。**選ぶだけで、消さない。**
-
-    entries は (パス, 最終更新エポック秒) のタプルの一覧。
-    now_epoch から見て days 日以上前のものの**パスの一覧**を返す
-    （ちょうど days 日前も含む＝「以上」）。
-
-    「選ぶ」と「消す」を関数から分けておくのが、dry-run（予行演習）の土台だ。
-    選ぶだけなら何度実行しても安全で、テストもできる。
-    """
-    raise NotImplementedError("select_old_files を実装しよう")
+    """days 日以上前のファイルのパスを返す。選ぶだけで、消さない。"""
+    cutoff = now_epoch - days * 86400
+    return [path for path, mtime in entries if mtime <= cutoff]
 
 
-# ── 収集・表示・main（自分で組み上げる。自動採点の対象外）──────────────
-# ヒントは課題4の道しるべ（レッスン proj-17）にある。
-# 収集は課題1の subprocess の型がそのまま使える。取れない項目は
-# 記録に「取れなかった」と残して続行する（部分障害でも止めない）。
+# ── 収集（環境依存。取れない項目は記録して続行）───────────────────────
+
+def _run(cmd):
+    r = subprocess.run(cmd, capture_output=True, text=True, timeout=15)
+    if r.returncode != 0:
+        raise RuntimeError(f"終了コード {r.returncode}: {r.stderr.strip()[:120]}")
+    return r.stdout
+
+
+def collect_packages():
+    # Ubuntu/Debian 前提（WSL2 もこれ）。"名前 バージョン" の一覧にする。
+    out = _run(["dpkg-query", "-W", "-f", "${Package} ${Version}\n"])
+    return [line for line in out.splitlines() if line.strip()]
+
+
+def collect_services():
+    out = _run(["systemctl", "list-units", "--type=service", "--state=running",
+                "--no-legend", "--plain"])
+    return [line.split()[0].removesuffix(".service") for line in out.splitlines() if line.strip()]
+
+
+def collect_listen_ports():
+    # ss -tlnH: TCP・LISTEN・数値表示・ヘッダ無し。4列目 "0.0.0.0:80" の末尾がポート。
+    out = _run(["ss", "-tlnH"])
+    ports = set()
+    for line in out.splitlines():
+        parts = line.split()
+        if len(parts) >= 4:
+            ports.add(int(parts[3].rsplit(":", 1)[1]))
+    return sorted(ports)
+
+
+def collect_users():
+    # ログインできるシェルを持つユーザーだけ（システムユーザーのノイズを避ける）。
+    users = []
+    with open("/etc/passwd") as f:
+        for line in f:
+            fields = line.strip().split(":")
+            if len(fields) >= 7 and fields[6] in ("/bin/bash", "/bin/sh", "/bin/zsh"):
+                users.append(fields[0])
+    return users
+
+
+def collect_cron():
+    try:
+        out = _run(["crontab", "-l"])
+    except RuntimeError:
+        return []  # crontab が空だと終了コード1。空は異常ではない。
+    return [line for line in out.splitlines()
+            if line.strip() and not line.strip().startswith("#")]
+
+
+COLLECTORS = {
+    "packages": collect_packages,
+    "services_running": collect_services,
+    "listen_ports": collect_listen_ports,
+    "users": collect_users,
+    "cron_entries": collect_cron,
+}
+
+
+def collect(now_label):
+    """全項目を収集。取れない項目は notes に残して続行する。"""
+    snapshot = {"collected_at": now_label}
+    notes = []
+    for name, fn in COLLECTORS.items():
+        try:
+            snapshot[name] = fn()
+        except Exception as e:  # 部分障害でも全体を止めない
+            log.warning("%s を収集できなかった: %s", name, e)
+            notes.append(f"{name}: {e}")
+    return snapshot, notes
+
+
+# ── 表示 ─────────────────────────────────────────────────────────────
+
+def render_report(diff, notes):
+    lines = ["# 構成差分レポート", ""]
+    if judge_diff(diff) == "OK":
+        lines.append("差分なし（前回と同じ構成）。")
+    for key, value in diff["added"].items():
+        lines.append(f"+ 新しい項目: {key} = {value}")
+    for key, value in diff["removed"].items():
+        lines.append(f"- 消えた項目: {key} = {value}")
+    for key, change in diff["changed"].items():
+        if "added" in change:
+            for item in change["added"]:
+                lines.append(f"+ {key}: {item}")
+            for item in change["removed"]:
+                lines.append(f"- {key}: {item}")
+        else:
+            lines.append(f"* {key}: {change['before']} → {change['after']}")
+    if notes:
+        lines.append("")
+        lines.append("収集できなかった項目（差分には数えない）:")
+        for note in notes:
+            lines.append(f"  ? {note}")
+    return "\n".join(lines)
+
 
 def main(argv=None):
-    """CLI 本体。収集→正規化→保存→前回と比較→レポート、を回す。"""
-    # ★TODO★ 課題4の道しるべに沿って組み上げる。
-    raise NotImplementedError("main を実装しよう")
+    parser = argparse.ArgumentParser(description="構成情報の収集と差分検知")
+    parser.add_argument("--snapshot", default="snapshot.local.json",
+                        help="前回スナップショットの保存先")
+    parser.add_argument("--label", default="(unknown)", help="collected_at に入れる時刻ラベル")
+    parser.add_argument("--json", action="store_true", help="差分を JSON で出力する")
+    args = parser.parse_args(argv)
+
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+
+    snapshot, notes = collect(args.label)
+    if len(snapshot) <= 1:  # collected_at しか無い＝何も収集できなかった
+        log.error("何も収集できなかった。この環境では動かせない可能性が高い")
+        return status_to_exit_code("UNKNOWN")
+
+    # 前回を読む。無ければ「初回」——保存だけして OK で終わる（比べる相手がいない）。
+    try:
+        with open(args.snapshot) as f:
+            prev = json.load(f)
+    except FileNotFoundError:
+        prev = None
+    except ValueError:
+        log.error("前回スナップショットが壊れている: %s", args.snapshot)
+        return status_to_exit_code("UNKNOWN")
+
+    with open(args.snapshot, "w") as f:
+        json.dump(snapshot, f, ensure_ascii=False, indent=2)
+
+    if prev is None:
+        print("初回実行: ベースラインを保存した。次回から差分が出る。")
+        return status_to_exit_code("OK")
+
+    diff = diff_config(normalize(prev), normalize(snapshot))
+    status = judge_diff(diff)
+
+    if args.json:
+        print(json.dumps({"overall": status, "exit_code": status_to_exit_code(status),
+                          "diff": diff}, ensure_ascii=False, indent=2))
+    else:
+        print(render_report(diff, notes))
+
+    log.info("差分チェック終了: %s", status)
+    return status_to_exit_code(status)
 
 
 if __name__ == "__main__":
