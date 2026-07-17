@@ -24,3 +24,6 @@ jobs:
 
       - name: 課題3 ログ解析
         run: python -m unittest discover -s projects/03-log-analysis -v
+
+      - name: 課題4 構成差分
+        run: python -m unittest discover -s projects/04-config-diff -v

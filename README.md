@@ -39,7 +39,7 @@
 | 1 | `projects/01-healthcheck/` | サーバーヘルスチェックCLI | あり | 公開中 |
 | 2 | `projects/02-db-check/` | DB日次点検（PostgreSQL主線/Oracle選択） | 一部 | 公開中 |
 | 3 | `projects/03-log-analysis/` | ログ解析と通知 | あり | 公開中 |
-| 4 | `projects/04-config-diff/` | 構成差分と変更系ツール | 一部 | 準備中 |
+| 4 | `projects/04-config-diff/` | 構成差分と変更系ツール | あり | 公開中 |
 | 5 | `projects/05-web-api/` | 点検結果管理API（FastAPI） | あり | 準備中 |
 | 6 | `projects/06-deploy/` | デプロイ（動かす・守る） | なし | 準備中 |
 | 7 | `projects/07-monitoring/` | 統合監視システム | 一部 | 準備中 |

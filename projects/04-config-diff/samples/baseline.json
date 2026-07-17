@@ -1,0 +1,29 @@
+{
+  "collected_at": "2026-07-15 06:00:03",
+  "hostname": "web-01",
+  "packages": [
+    "ca-certificates 20240203",
+    "cron 3.0pl1-184ubuntu2",
+    "nginx 1.24.0-2ubuntu7",
+    "openssh-server 1:9.6p1-3ubuntu13",
+    "openssl 3.0.13-0ubuntu3",
+    "python3 3.12.3-0ubuntu2"
+  ],
+  "services_running": [
+    "cron",
+    "nginx",
+    "ssh"
+  ],
+  "listen_ports": [
+    22,
+    80
+  ],
+  "users": [
+    "deploy",
+    "root",
+    "www-data"
+  ],
+  "cron_entries": [
+    "0 6 * * * /opt/checks/db_check.sh"
+  ]
+}
