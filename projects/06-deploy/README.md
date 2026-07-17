@@ -53,6 +53,22 @@ cd projects/05-web-api && python -m unittest && cd ../..       # 課題5が緑�
 `.env` のコピーを忘れると、後でサービスが「Failed to load environment files」で
 起動に失敗する（採点テストは .env 無しでも緑になるので、ここで気づきにくい）。
 
+## 進め方（8段の地図）
+
+長い課題なので、先に全体の地図を渡す。各段の終わりに「確認」があり、
+そこが通れば次へ進んでよい。疲れたら、段の切れ目で止まって明日にしよう。
+
+| 段 | やること | 確認 |
+|---|---|---|
+| 1 | 実機を用意する | `systemctl` の一覧が出る |
+| 2 | 実機に課題5を用意する | 実機の中で採点が緑 |
+| 3 | systemd で常駐させる | `status` が active (running) |
+| 4 | 常駐を証明する | SIGKILL から生き返る・再起動後も居る |
+| 5 | Nginx を玄関に立てる | `curl http://localhost/health` が通る |
+| 6 | TLS を体験する | `curl -k https://localhost/health` が通る |
+| 7 | ログを確認し、バックアップ→リストア演習 | 消して、戻せた |
+| 8 | RUNBOOK を埋めて、手順書だけで一周 | 手順書のとおりに動いた |
+
 ## 動かす① — systemd で常駐させる
 
 `deploy/terakoya-api.service` が穴埋めテンプレートだ。`<あなたのユーザー名>` を
