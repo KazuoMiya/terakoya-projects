@@ -1,24 +1,15 @@
-"""課題5: 点検結果管理API（あなたが実装する）。
+"""課題5: 点検結果管理API — 参考実装（solutions ブランチ）。
 
-課題1〜4で作ってきた道具は、結果を画面とファイルに出していた。
-この課題では、結果を「受け取って・貯めて・見せる」側——Web API——を作る。
-課題7（統合監視）では、課題1のCLIがこのAPIに報告を送ることになる。
-
-雛形には /health だけ実装してある。まずこれを動かして「一周」を見てから、
-残りのエンドポイントを README の仕様どおりに足していく。
-
-起動（開発用サーバー。venv の中で）:
-    uvicorn app:app --reload --app-dir src
-ブラウザで http://127.0.0.1:8000/docs を開くと、APIの説明書が自動でできている。
-
-認証: 書き込み系（POST）は、リクエストヘッダ X-API-Key が .env の API_KEY と
-一致したときだけ通す。読み取り系（GET）は認証なしでよい。
+これは「答え」だ。詰まったときの安全網として置いてある。
+まず自分で書いてみて、どうしても進めないところだけ覗くのがおすすめ。
 """
 import os
 from contextlib import asynccontextmanager
+from typing import Literal, Optional
 
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import FastAPI, Header, HTTPException, Query
+from pydantic import BaseModel, Field
 
 import db
 
@@ -28,33 +19,78 @@ API_KEY = os.environ.get("API_KEY", "")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """起動時にテーブルを用意する。この関数はおまじないでよい（起動と終了の間で yield）。"""
     db.init_db()
     yield
 
 
-app = FastAPI(title="Terakoya 点検結果管理API", version="0.1.0", lifespan=lifespan)
+app = FastAPI(title="Terakoya 点検結果管理API", version="1.0.0", lifespan=lifespan)
 
+
+# ── 入力の形（Pydantic モデル）。型を書くと検証がついてくる ──────────────
+
+class ServerIn(BaseModel):
+    hostname: str = Field(min_length=1, max_length=64)
+    role: str = Field(min_length=1, max_length=32)
+
+
+class CheckIn(BaseModel):
+    metric: str = Field(min_length=1, max_length=64)
+    value: float
+    # 状態は課題1から使ってきた4値だけ。それ以外は入口で弾く（422）。
+    status: Literal["OK", "WARNING", "CRITICAL", "UNKNOWN"]
+
+
+# ── 認証。書き込み系だけ、X-API-Key を検める ───────────────────────────
+
+def require_api_key(x_api_key):
+    """鍵が違えば 401。メッセージには理由以上のことを書かない。"""
+    if not API_KEY or x_api_key != API_KEY:
+        raise HTTPException(status_code=401, detail="APIキーが必要です")
+
+
+# ── エンドポイント ───────────────────────────────────────────────────
 
 @app.get("/health")
 def health():
-    """生きているかの確認。課題7で、このAPI自体が監視される側になる。"""
     return {"status": "ok"}
 
 
-# ── ここから下を実装する ──────────────────────────────────────────────
-#
-# ★TODO★ README の仕様どおりに、次のエンドポイントを作る。
-#
-#   GET  /servers                 サーバー一覧
-#   POST /servers                 サーバー登録（要APIキー・検証・重複は409）
-#   GET  /servers/{server_id}     1件取得（無ければ404）
-#   POST /servers/{server_id}/checks   点検結果の記録（要APIキー・検証・404）
-#   GET  /servers/{server_id}/checks   点検結果の一覧（新しい順・?limit=）
-#
-# 入力の形と検証は Pydantic のモデルで書く（課題5の道しるべ参照）:
-#   from pydantic import BaseModel, Field
-#   from typing import Literal
-#
-# エラーで返すのは「使う人が直せる情報」だけ。テーブル名やSQLの断片のような
-# 内部情報をクライアントに返さないこと（エラーメッセージも設計のうちだ）。
+@app.get("/servers")
+def list_servers():
+    return db.list_servers()
+
+
+@app.post("/servers", status_code=201)
+def create_server(body: ServerIn, x_api_key: Optional[str] = Header(default=None)):
+    require_api_key(x_api_key)
+    # 重複は「入力ミス」ではなく「状態の衝突」なので 422 ではなく 409。
+    if db.get_server_by_hostname(body.hostname) is not None:
+        raise HTTPException(status_code=409, detail="その hostname は登録済みです")
+    new_id = db.insert_server(body.hostname, body.role)
+    return {"id": new_id, "hostname": body.hostname, "role": body.role}
+
+
+@app.get("/servers/{server_id}")
+def get_server(server_id: int):
+    server = db.get_server(server_id)
+    if server is None:
+        # 内部情報（テーブル名・SQL）は出さない。使う人が直せる情報だけ。
+        raise HTTPException(status_code=404, detail="サーバーが見つかりません")
+    return server
+
+
+@app.post("/servers/{server_id}/checks", status_code=201)
+def record_check(server_id: int, body: CheckIn, x_api_key: Optional[str] = Header(default=None)):
+    require_api_key(x_api_key)
+    if db.get_server(server_id) is None:
+        raise HTTPException(status_code=404, detail="サーバーが見つかりません")
+    new_id = db.insert_check(server_id, body.metric, body.value, body.status)
+    return {"id": new_id, "server_id": server_id, "metric": body.metric,
+            "value": body.value, "status": body.status}
+
+
+@app.get("/servers/{server_id}/checks")
+def list_checks(server_id: int, limit: int = Query(default=20, ge=1, le=100)):
+    if db.get_server(server_id) is None:
+        raise HTTPException(status_code=404, detail="サーバーが見つかりません")
+    return db.list_checks(server_id, limit=limit)
