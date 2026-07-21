@@ -1,3 +1,5 @@
+> English version: [README.en.md](./README.en.md)
+
 # 課題6: デプロイ — 動かす・守る
 
 課題5のAPIは、いま `uvicorn` を**手で**起動している。ターミナルを閉じれば死ぬ。

@@ -8,6 +8,17 @@
 
 実行（projects/07-monitoring の中で）:
     python -m unittest -v
+
+Auto-grading for the final project.
+
+Verifies the three pure functions (parse_config / judge_http / should_alert).
+The loop, HTTP, and recording vary by environment, so they are not graded
+here (check them yourself with the demo scenario in the README).
+
+You do not need to edit this file. Reading it tells you what is expected.
+
+Run (inside projects/07-monitoring):
+    python -m unittest -v
 """
 import os
 import sys
@@ -60,6 +71,7 @@ class TestParseConfig(unittest.TestCase):
         with self.assertRaises(ValueError) as ctx:
             monitor.parse_config(c)
         # 「どの対象が」おかしいかがメッセージに入っていること。
+        # The message must say WHICH target is wrong.
         self.assertIn("web-gate", str(ctx.exception))
 
     def test_http_without_url_is_rejected(self):
@@ -85,7 +97,7 @@ class TestParseConfig(unittest.TestCase):
 
 class TestJudgeHttp(unittest.TestCase):
     def test_connection_failure_is_critical(self):
-        # 繋がらない＝対象が死んでいる。
+        # 繋がらない＝対象が死んでいる。 / Cannot connect = the target is dead.
         self.assertEqual(monitor.judge_http(None, None, 500, 2000), "CRITICAL")
 
     def test_non_200_is_critical(self):
@@ -108,7 +120,7 @@ class TestJudgeHttp(unittest.TestCase):
 
 class TestShouldAlert(unittest.TestCase):
     def test_same_status_stays_silent(self):
-        # ここがアラート疲れの防波堤。言い続けない。
+        # ここがアラート疲れの防波堤。言い続けない。 / The breakwater against alert fatigue. Don't keep repeating.
         self.assertFalse(monitor.should_alert("OK", "OK"))
         self.assertFalse(monitor.should_alert("CRITICAL", "CRITICAL"))
 
@@ -118,6 +130,7 @@ class TestShouldAlert(unittest.TestCase):
 
     def test_recovery_alerts(self):
         # 回復も知らせる。「直った」を確認する人のためだ。
+        # Announce recovery too — for the person who confirms "it's fixed."
         self.assertTrue(monitor.should_alert("CRITICAL", "OK"))
 
     def test_first_time_ok_is_silent(self):
@@ -129,7 +142,10 @@ class TestShouldAlert(unittest.TestCase):
 
 
 class TestGiftsFromTask1(unittest.TestCase):
-    """課題1の道具は配ってある（作り直さなくてよい）ことの確認。"""
+    """課題1の道具は配ってある（作り直さなくてよい）ことの確認。
+
+    Confirms the Project 1 tools are provided (no need to rebuild them).
+    """
 
     def test_worst_status(self):
         self.assertEqual(monitor.worst_status(["OK", "CRITICAL", "WARNING"]), "CRITICAL")

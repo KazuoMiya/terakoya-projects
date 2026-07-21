@@ -1,3 +1,5 @@
+> English version: [README.en.md](./README.en.md)
+
 # 課題3: ログ解析・障害検知ツール
 
 障害対応の朝、あなたは大量のログから「いつから・何が・どれくらい」を、grep と

@@ -1,3 +1,5 @@
+> English version: [README.en.md](./README.en.md)
+
 # Terakoya プロジェクト集 — 実装の一周
 
 学習サイト **[Terakoya](https://terakoya.miya-dca.workers.dev)** のコース

@@ -1,3 +1,5 @@
+> English version: [README.en.md](./README.en.md)
+
 # 課題2: DB日次点検ツール
 
 毎朝の「DBは無事か」を、コマンド一発で答えられるようにする。

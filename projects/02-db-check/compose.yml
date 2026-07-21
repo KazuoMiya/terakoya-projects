@@ -1,35 +1,54 @@
 # 課題2の検証環境。これは完成品だ——中身を理解しなくても、そのまま動く。
+# The verification environment for Assignment 2. It is a finished product —
+# it works as-is, even if you don't understand its internals.
 # この課題で学ぶのはDBの点検であって、Dockerではない。
+# What you learn in this assignment is DB inspection, not Docker.
 #
 #   起動:     docker compose up -d
 #   状態確認: docker compose ps        （STATUS が healthy になるまで待つ）
 #   完全初期化: docker compose down -v && docker compose up -d
 #
+#   Start:        docker compose up -d
+#   Check status: docker compose ps        (wait until STATUS becomes healthy)
+#   Full reset:   docker compose down -v && docker compose up -d
+#
 # Oracle選択トラックの人だけ: docker compose --profile oracle up -d
+# Only for people on the optional Oracle track: docker compose --profile oracle up -d
 # （主線はPostgreSQLだけ。Oracleは重いので、profiles で普段は起動しない）
+# (The main line is PostgreSQL only. Oracle is heavy, so profiles keep it off normally.)
 
 services:
   postgres:
     image: postgres:16
     environment:
       # パスワードは .env から読む。compose.yml に直書きしない（秘密の分離）。
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?.env を用意すること（.env.example をコピー）}
+      # Passwords are read from .env. Never hard-code them in compose.yml (separation of secrets).
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?.env を用意すること（.env.example をコピー） / prepare .env (copy .env.example)}
       POSTGRES_DB: terakoya
       # 点検専用の読み取り専用ユーザーを作るために、初期化スクリプトへ渡す。
-      CHECKER_PASSWORD: ${CHECKER_PASSWORD:?.env を用意すること（.env.example をコピー）}
+      # Passed to the init script to create the read-only user dedicated to inspections.
+      CHECKER_PASSWORD: ${CHECKER_PASSWORD:?.env を用意すること（.env.example をコピー） / prepare .env (copy .env.example)}
     ports:
       - "5432:5432"
     volumes:
       # 初回起動時だけ、この中のスクリプトが上から順に実行される。
+      # Only on the very first startup, the scripts in here run from top to bottom.
       - ./initdb:/docker-entrypoint-initdb.d:ro
       - pgdata:/var/lib/postgresql/data
     healthcheck:
       # 「起動した」と「受け付けられる」は別物。healthy を待つ作法をここで体験する。
+      # "It started" and "it accepts connections" are two different things.
+      # Here you experience the habit of waiting for healthy.
       #
       # -h 127.0.0.1 は必須。省略すると pg_isready は Unix ソケットに繋ぎにいくが、
       # 初期化中の一時サーバもソケットだけは開けている（TCPは閉じている）。
       # つまり checker ロールを作り終える前に「healthy」と嘘をつく。
       # TCP を叩けば、初期化中は必ず失敗する＝外から使える状態だけを healthy と呼べる。
+      # -h 127.0.0.1 is required. Without it, pg_isready connects over the Unix
+      # socket — and the temporary server used during initialization opens that
+      # socket too (while TCP stays closed). In other words, it would lie and say
+      # "healthy" before the checker role is finished. Probing TCP always fails
+      # during initialization = only a state usable from outside is called healthy.
       test: ["CMD-SHELL", "pg_isready -U postgres -d terakoya -h 127.0.0.1"]
       interval: 5s
       timeout: 3s
@@ -38,6 +57,7 @@ services:
 
   oracle:
     # 選択トラック専用。--profile oracle を付けたときだけ起動する。
+    # Optional track only. Starts only when you pass --profile oracle.
     profiles: ["oracle"]
     image: gvenzl/oracle-free:slim
     environment:

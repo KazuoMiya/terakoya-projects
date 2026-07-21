@@ -7,6 +7,17 @@ TestClient（サーバーを起動せずにAPIを呼べるテスト道具）で�
 
 実行（projects/05-web-api の中で。venv に requirements.txt が入っていること）:
     python -m unittest -v
+
+Auto-grading for Project 5.
+
+Uses TestClient (a test tool that calls the API without starting a server)
+to verify the behavior matches the README spec. The DB is a temporary file,
+so your api.db stays untouched.
+
+You do not need to edit this file. Reading it tells you what is expected.
+
+Run (inside projects/05-web-api, with requirements.txt installed in the venv):
+    python -m unittest -v
 """
 import os
 import sys
@@ -14,6 +25,7 @@ import tempfile
 import unittest
 
 # ── テスト用の環境を、アプリを読み込む「前に」用意する ──────────────────
+# ── Prepare the test environment BEFORE importing the app ──────────────
 _tmpdir = tempfile.TemporaryDirectory()
 os.environ["API_DB_PATH"] = os.path.join(_tmpdir.name, "test.db")
 os.environ["API_KEY"] = "test-key"
@@ -33,7 +45,7 @@ def make_client():
 
 class TestHealth(unittest.TestCase):
     def test_health_is_ok(self):
-        # 雛形の時点で緑になる1本。ここから始めよう。
+        # 雛形の時点で緑になる1本。ここから始めよう。 / The one test that is green in the skeleton. Start here.
         with make_client() as client:
             r = client.get("/health")
         self.assertEqual(r.status_code, 200)
@@ -42,7 +54,7 @@ class TestHealth(unittest.TestCase):
 
 class TestServers(unittest.TestCase):
     def setUp(self):
-        # 各テストをまっさらなDBで始める。
+        # 各テストをまっさらなDBで始める。 / Start every test with a clean DB.
         if os.path.exists(os.environ["API_DB_PATH"]):
             os.remove(os.environ["API_DB_PATH"])
 
@@ -116,6 +128,7 @@ class TestServers(unittest.TestCase):
 
     def test_error_body_does_not_leak_internals(self):
         # エラーメッセージも設計のうち。内部情報（テーブル名・SQL・Traceback）を出さない。
+        # Error messages are part of the design. Leak no internals (table names, SQL, tracebacks).
         with make_client() as client:
             r = client.get("/servers/9999")
             text = r.text.lower()
@@ -156,6 +169,7 @@ class TestChecks(unittest.TestCase):
 
     def test_invalid_status_is_422(self):
         # 状態は課題1から使ってきた4値だけ。それ以外は入口で弾く。
+        # Only the four statuses used since Project 1. Reject everything else at the door.
         with make_client() as client:
             s = self._server(client)
             r = client.post(f"/servers/{s['id']}/checks",
@@ -189,7 +203,7 @@ class TestChecks(unittest.TestCase):
             r = client.get(f"/servers/{s['id']}/checks")
             self.assertEqual(r.status_code, 200)
             statuses = [c["status"] for c in r.json()]
-            self.assertEqual(statuses[0], "CRITICAL")  # 最新が先頭
+            self.assertEqual(statuses[0], "CRITICAL")  # 最新が先頭 / newest first
 
     def test_list_checks_respects_limit(self):
         with make_client() as client:

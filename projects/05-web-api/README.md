@@ -1,3 +1,5 @@
+> English version: [README.en.md](./README.en.md)
+
 # 課題5: 点検結果管理API
 
 課題1〜4の道具は、結果を画面とファイルに出してきた。この課題では立場を変えて、
