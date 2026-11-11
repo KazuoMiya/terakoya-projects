@@ -341,10 +341,22 @@ def main(argv=None):
     try:
         # 接続タイムアウトと実行タイムアウトを「両方」設定する（鉄則1）。
         # options の statement_timeout はサーバ側で重いSQLを打ち切る保険。
+        #
+        # autocommit=True も要る。psycopg 3 は既定だと、最初のSQLから1つのトランザクションを
+        # 始める。その中でSQLが1本でも失敗すると、以降のSQLは全部
+        # 「current transaction is aborted」で拒否される——1項目の失敗が、残りの項目を
+        # 道連れにしてしまう。autocommit=True なら1文ごとに完結するので、
+        # 失敗した項目だけが UNKNOWN になる（点検ツール自身がトランザクションを
+        # 開いたまま居座ることも無くなる）。
+        #
+        # default_transaction_read_only=on は、読み取り専用を接続レベルでも宣言する保険。
+        # checker ロールに書き込み権限は無いが、権限を持つユーザーで繋いでしまっても、既定では書けない。
         with psycopg.connect(
-            dsn, connect_timeout=5, options="-c statement_timeout=5000"
+            dsn,
+            connect_timeout=5,
+            autocommit=True,
+            options="-c statement_timeout=5000 -c default_transaction_read_only=on",
         ) as conn:
-            conn.read_only = True  # 読み取り専用を接続レベルでも宣言する
             results = collect(conn, args)
     except Exception as e:
         log.error("接続そのものに失敗: %s", e)

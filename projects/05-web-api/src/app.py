@@ -14,7 +14,12 @@ from pydantic import BaseModel, Field
 import db
 
 load_dotenv()
-API_KEY = os.environ.get("API_KEY", "")
+
+# 鍵が未設定のままでは起動しない。未設定を空文字で受けると、
+# 「空の X-API-Key でも通ってしまう」実装になりやすいからだ。
+API_KEY = os.environ.get("API_KEY")
+if not API_KEY:
+    raise RuntimeError("API_KEY が未設定だ。cp .env.example .env をしたか確認する")
 
 
 @asynccontextmanager
@@ -44,7 +49,7 @@ class CheckIn(BaseModel):
 
 def require_api_key(x_api_key):
     """鍵が違えば 401。メッセージには理由以上のことを書かない。"""
-    if not API_KEY or x_api_key != API_KEY:
+    if x_api_key != API_KEY:
         raise HTTPException(status_code=401, detail="APIキーが必要です")
 
 
