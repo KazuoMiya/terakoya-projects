@@ -41,7 +41,17 @@ from fastapi import FastAPI
 import db
 
 load_dotenv()
-API_KEY = os.environ.get("API_KEY", "")
+
+# 鍵が未設定のままでは起動しない。未設定を空文字で受けると、
+# 「空の X-API-Key でも通ってしまう」実装になりやすいからだ。
+# Refuse to start without a key. Treating "unset" as an empty string makes it
+# easy to write a check that an empty X-API-Key header would pass.
+API_KEY = os.environ.get("API_KEY")
+if not API_KEY:
+    raise RuntimeError(
+        "API_KEY が未設定だ。cp .env.example .env をしたか確認する"
+        " / API_KEY is not set. Did you run: cp .env.example .env"
+    )
 
 
 @asynccontextmanager

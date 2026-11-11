@@ -19,6 +19,13 @@
 #      this script — always go on to the restore drill in the README.
 set -euo pipefail
 
+# バックアップは本体と同じ中身（＝同じ機密）を持つ。作るファイルとフォルダを
+# 自分だけが読める権限にする（既定のままだと、同じ機械の他のユーザーも読める）。
+# A backup holds the same contents (= the same secrets) as the original. Make the
+# files and folders created here readable by you only (by default, other users
+# on the same machine could read them too).
+umask 077
+
 DB_PATH="${1:?使い方 / Usage: bash deploy/backup.sh <api.dbのパス / path to api.db> <バックアップ置き場 / backup dir>}"
 BACKUP_DIR="${2:?バックアップ置き場も指定すること / Specify the backup dir too}"
 

@@ -45,7 +45,8 @@ def make_client():
 
 class TestHealth(unittest.TestCase):
     def test_health_is_ok(self):
-        # 雛形の時点で緑になる1本。ここから始めよう。 / The one test that is green in the skeleton. Start here.
+        # 雛形の時点で、実装済みのコードで緑になる1本。ここから始めよう。
+        # The one test that is green in the skeleton thanks to code already there. Start here.
         with make_client() as client:
             r = client.get("/health")
         self.assertEqual(r.status_code, 200)

@@ -7,8 +7,8 @@
 ## テキスト出力（`--warn 70 --crit 90`）
 
 ```
-[OK]       disk_usage   42%   (warn=70 crit=90)
-[WARNING]  load_average 1.85  (warn=70 crit=90)
+[WARNING]  disk_usage   74%   (warn=70 crit=90)
+[OK]       load_average 1.85  (warn=70 crit=90)
 [UNKNOWN]  log_errors   -     (収集に失敗: ログファイルが読めない)
 
 全体: WARNING
@@ -27,12 +27,19 @@ echo $?
   "overall": "WARNING",
   "exit_code": 1,
   "checks": [
-    { "name": "disk_usage",   "status": "OK",      "value": 42 },
-    { "name": "load_average", "status": "WARNING", "value": 1.85 },
+    { "name": "disk_usage",   "status": "WARNING", "value": 74 },
+    { "name": "load_average", "status": "OK",      "value": 1.85 },
     { "name": "log_errors",   "status": "UNKNOWN",  "value": null, "error": "ログファイルが読めない" }
   ]
 }
 ```
+
+> **ロードアベレージが 1.85 で OK なのはなぜか。** この見本は `--warn 70 --crit 90` という
+> 1組の閾値を、全項目にそのまま当てている。ディスク使用率（%）にはちょうど合う。
+> だがロードアベレージは % ではなく「CPUの行列の長さ」なので、70 に届くことはまず無い。
+> つまりこのままだと、ロードアベレージは事実上いつも OK になる。
+> 課題1の完了条件はこの形で満たせる。**項目ごとに閾値を分ける**（`--load-warn` /
+> `--load-crit` を足す、CPUの個数で割って % にそろえる、など）のは、仕上げたあとの良い改良だ。
 
 ## 自己チェックの観点
 

@@ -29,6 +29,11 @@ Every project follows the same small loop as the graduation exercise.
 4. push → **Pull Request** → auto-grading turns **green ✓** → self-merge
 5. Fill in `RETROSPECTIVE.md` (the retrospective)
 
+**Auto-grading looks only at the projects your PR changed.** A PR that changes files under
+`projects/01-healthcheck/` runs only Project 1's tests. Projects you haven't started are still
+skeletons and always fail, so they are left out. To check every project at once, run it by hand:
+the repository's "Actions" tab → "自動採点" → "Run workflow".
+
 **Some projects have no auto-grading** (the DB check, deployment, and others that depend on your environment).
 For those, check your own work against the completion checklist in each folder's `README.md` and
 the sample in `expected-output.md`. What certifies completion is the green check and your retrospective.
@@ -66,8 +71,34 @@ In particular, **Git (module 3) and the graduation exercise** in The Field of De
 | (Project 2) `password authentication failed` | Did you create `.env` (`cp .env.example .env`)? To redo it, start from `docker compose down -v` |
 | (Project 2) The DB got into a weird state | `docker compose down -v && docker compose up -d` returns it to a clean slate |
 | Checks (auto-grading) are red | Open the red job and read the output of the failing test. That's the place to fix |
+| Checks are red because of a project you never touched / fail before reaching the tests | Copies made before November 2026 have an outdated grading setup. See "Picking up template updates" below |
+| A project you haven't started gets graded and goes red | Did this PR change anything inside that project's folder (its README, for example)? Grading covers every project whose folder the PR changed |
 | Checks don't appear at all | Enable the workflow in the repository's "Actions" tab |
 | Everything's a mess | You can delete this copy and recreate it from the template |
+
+## Picking up template updates (for copies made before November 2026)
+
+A copy made from the template is a snapshot of that moment. Fixes to the template do not reach
+it automatically. Of the November 2026 fixes, these three are the ones to apply by hand.
+How to tell: if your `.github/workflows/grade.yml` has no line saying "採点する課題を決める", your copy is an old one.
+
+1. **Auto-grading (`.github/workflows/grade.yml`)** — the old setup graded every project on every PR.
+   As a result, a PR that implemented only Project 1 always went red on the tests of projects not yet started.
+   - Fix: open the template's [grade.yml](https://github.com/KazuoMiya/terakoya-projects/blob/main/.github/workflows/grade.yml)
+     and copy its contents with "Copy raw file". Open the same file in your own repository on GitHub,
+     click the pencil icon (Edit) → replace the whole contents → "Commit changes".
+   - If you have a PR still open, click "Close pull request" and then "Reopen pull request". Grading reruns with the new setup.
+     If the old grading still runs, push one new commit to your working branch.
+   - Bring the change into your local repository too: `git switch main` → `git pull`.
+2. **Project 2's `compose.yml`** — the DB ports are now opened only on `127.0.0.1` (this machine itself).
+   Before, other machines on the same Wi-Fi or office LAN could connect too.
+   - Fix: under `ports:`, change `"5432:5432"` to `"127.0.0.1:5432:5432"` and `"1521:1521"` to
+     `"127.0.0.1:1521:1521"`, then run `docker compose up -d` again.
+3. **Project 2's optional Oracle track (only if you use it)** — granting privileges to the inspection user was failing
+   (the `v$` views could not be read: ORA-00942).
+   - Fix: replace `projects/02-db-check/initdb-oracle/01-checker-grants.sql` with the template's latest version, then
+     rebuild with `docker compose --profile oracle down -v` → `docker compose --profile oracle up -d`
+     (the PostgreSQL data returns to its initial state too).
 
 ## About this repository
 

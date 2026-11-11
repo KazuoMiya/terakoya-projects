@@ -182,6 +182,11 @@ def main(argv=None):
         from dotenv import load_dotenv
         load_dotenv()
 
+    接続は autocommit=True で開くこと（psycopg.connect(..., autocommit=True)）。
+    psycopg 3 は既定だと、最初のSQLから1つのトランザクションを始める。その中で
+    SQLが1本でも失敗すると、以降のSQLが全部拒否されてしまい、
+    「1項目が失敗しても他は続行」が成り立たなくなる。
+
     The CLI itself. Connect using DB_DSN, inspect, display, and return an exit code.
 
     The connection info is in DB_DSN inside .env. But .env is not a magic file —
@@ -189,6 +194,11 @@ def main(argv=None):
     automatically. requirements.txt includes python-dotenv, so load it explicitly:
         from dotenv import load_dotenv
         load_dotenv()
+
+    Open the connection with autocommit=True (psycopg.connect(..., autocommit=True)).
+    By default psycopg 3 starts one transaction at the first SQL. If a single SQL
+    fails inside it, every later SQL is refused, and "one failed item must not
+    stop the others" no longer holds.
     """
     # ★TODO★ 課題2の道しるべに沿って組み上げる。 / Build it up following the Assignment 2 guide.
     raise NotImplementedError("main を実装しよう / Implement main")

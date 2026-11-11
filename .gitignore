@@ -10,7 +10,9 @@ venv/
 
 # 秘密は絶対にコミットしない（課題2以降で扱う）
 .env
+.env.*
 *.env
+!.env.example
 secret*
 *.key
 *.pem

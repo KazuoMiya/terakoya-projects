@@ -14,8 +14,8 @@ What matters is that "the same kinds of information come out, in a readable form
 ## Text output (`--warn 70 --crit 90`)
 
 ```
-[OK]       disk_usage   42%   (warn=70 crit=90)
-[WARNING]  load_average 1.85  (warn=70 crit=90)
+[WARNING]  disk_usage   74%   (warn=70 crit=90)
+[OK]       load_average 1.85  (warn=70 crit=90)
 [UNKNOWN]  log_errors   -     (collection failed: cannot read the log file)
 
 Overall: WARNING
@@ -34,12 +34,20 @@ echo $?
   "overall": "WARNING",
   "exit_code": 1,
   "checks": [
-    { "name": "disk_usage",   "status": "OK",      "value": 42 },
-    { "name": "load_average", "status": "WARNING", "value": 1.85 },
+    { "name": "disk_usage",   "status": "WARNING", "value": 74 },
+    { "name": "load_average", "status": "OK",      "value": 1.85 },
     { "name": "log_errors",   "status": "UNKNOWN",  "value": null, "error": "cannot read the log file" }
   ]
 }
 ```
+
+> **Why is a load average of 1.85 "OK"?** This sample applies one pair of thresholds,
+> `--warn 70 --crit 90`, to every item as-is. That fits disk usage (a percentage) well.
+> But a load average is not a percentage — it is "the length of the queue for the CPU" —
+> so it will almost never reach 70. In other words, as written, the load average is
+> effectively always OK. This shape still satisfies Project 1's completion criteria.
+> **Giving each item its own thresholds** (adding `--load-warn` / `--load-crit`, or dividing
+> by the number of CPUs to turn it into a percentage) is a good improvement once you're done.
 
 ## Self-check points
 

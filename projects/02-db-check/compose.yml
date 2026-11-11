@@ -29,7 +29,13 @@ services:
       # Passed to the init script to create the read-only user dedicated to inspections.
       CHECKER_PASSWORD: ${CHECKER_PASSWORD:?.env を用意すること（.env.example をコピー） / prepare .env (copy .env.example)}
     ports:
-      - "5432:5432"
+      # 先頭の 127.0.0.1 が大事。これが無いと、同じWi-Fiや社内LANに居る他のPCからも
+      # このDBに繋げてしまう（練習用のパスワードは公開されているので、誰でも入れる）。
+      # 127.0.0.1 を付けると、繋げるのはこのPC自身だけになる。
+      # The leading 127.0.0.1 matters. Without it, other machines on the same Wi-Fi
+      # or office LAN can reach this DB too (the practice passwords are public, so
+      # anyone could log in). With 127.0.0.1, only this machine itself can connect.
+      - "127.0.0.1:5432:5432"
     volumes:
       # 初回起動時だけ、この中のスクリプトが上から順に実行される。
       # Only on the very first startup, the scripts in here run from top to bottom.
@@ -61,11 +67,15 @@ services:
     profiles: ["oracle"]
     image: gvenzl/oracle-free:slim
     environment:
-      ORACLE_PASSWORD: ${ORACLE_PASSWORD:-oraclepass}
+      # PostgreSQL と同じく、パスワードは .env から読む。未設定のまま既定値で起動させない。
+      # Like PostgreSQL, passwords are read from .env. Never start with a built-in default.
+      ORACLE_PASSWORD: ${ORACLE_PASSWORD:?.env に ORACLE_PASSWORD が無い（.env.example を見て足す） / ORACLE_PASSWORD is missing in .env (see .env.example)}
       APP_USER: checker
-      APP_USER_PASSWORD: ${CHECKER_PASSWORD:-checkerpass}
+      APP_USER_PASSWORD: ${CHECKER_PASSWORD:?.env を用意すること（.env.example をコピー） / prepare .env (copy .env.example)}
     ports:
-      - "1521:1521"
+      # このPC自身からだけ繋げる（理由は上の postgres と同じ）。
+      # Reachable only from this machine itself (same reason as postgres above).
+      - "127.0.0.1:1521:1521"
     volumes:
       - ./initdb-oracle:/container-entrypoint-initdb.d:ro
       - oradata:/opt/oracle/oradata

@@ -20,11 +20,15 @@ The two things to look at are `enabled` (it comes up after a reboot) and `active
 ## Checking that it comes back to life
 
 ```
-$ ps aux | grep uvicorn        # note the PID
-$ sudo kill <PID>
+$ sudo systemctl kill -s SIGKILL terakoya-api   # force-kill = cause an abnormal death
 $ sleep 5 && curl -s http://127.0.0.1:8000/health
 {"status":"ok"}                # revived within seconds (Restart=on-failure)
 ```
+
+The `-s SIGKILL` is the point. A plain `kill` (SIGTERM) is the "please stop politely"
+signal, and it counts as a clean exit. `Restart=on-failure` reacts only to abnormal
+terminations, so after a plain `kill` the service does **not** come back (that is the
+correct behavior).
 
 ## Via the front door (Nginx)
 

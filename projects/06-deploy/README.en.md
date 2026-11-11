@@ -175,7 +175,7 @@ That's how you test a runbook.
 ## Completion check (Project 6 is done when all of these hold)
 
 - [ ] `systemctl status terakoya-api` shows active (running)
-- [ ] It revives after you kill the process / it comes up on its own after you reboot the machine
+- [ ] It revives after you kill the process with SIGKILL (an abnormal death) / it comes up on its own after you reboot the machine
 - [ ] `curl http://localhost/health` goes through via Nginx (and you passed `nginx -t` before applying)
 - [ ] `https://localhost/health` goes through with self-signed TLS, and you can state what the warning means in your own words
 - [ ] You can follow the app's logs with journalctl / you checked nginx's logrotate config

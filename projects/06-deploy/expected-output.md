@@ -14,11 +14,14 @@ $ sudo systemctl status terakoya-api
 ## 生き返りの確認
 
 ```
-$ ps aux | grep uvicorn        # PID を控える
-$ sudo kill <PID>
+$ sudo systemctl kill -s SIGKILL terakoya-api   # 強制終了＝異常死を起こす
 $ sleep 5 && curl -s http://127.0.0.1:8000/health
 {"status":"ok"}                # 数秒で生き返っている（Restart=on-failure）
 ```
+
+`-s SIGKILL` を付けるのが要点だ。素の `kill`（SIGTERM）は「行儀よく止まれ」の合図で、
+正常終了として扱われる。`Restart=on-failure` が反応するのは異常終了だけなので、
+素の `kill` では**生き返らない**（それが正しい動作だ）。
 
 ## 玄関（Nginx）経由
 

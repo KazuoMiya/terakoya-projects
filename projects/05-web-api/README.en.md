@@ -92,7 +92,12 @@ above says. It uses a temporary file for the DB, so `api.db` stays clean.
 python -m unittest -v
 ```
 
-With the bare skeleton, exactly one test — `/health` — is green. From there you stack up the other 21.
+With the bare skeleton, five tests are green. Only one of them — `/health` — passes because of code
+that is already there. The other four call a server that doesn't exist (`/servers/9999`): three check that a 404 comes back,
+and one checks that the error body carries no internals. All four pass by accident, because the
+endpoints don't exist yet and FastAPI answers 404 for any unknown path. Once you add an endpoint,
+the three that look for a 404 are red unless your own code returns it — only then are those tests
+really looking at your code. From here you work up to 22.
 
 ## How to proceed (four milestones)
 

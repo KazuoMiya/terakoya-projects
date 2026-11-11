@@ -46,6 +46,10 @@ docker compose ps             # wait until STATUS becomes healthy
 On first startup, a **read-only user `checker`** dedicated to inspection — plus sample data
 worth inspecting — is created automatically. The connection info is in `DB_DSN` in `.env`.
 
+The DB port is opened only on `127.0.0.1` (this machine itself). The practice passwords are values
+anyone can read, so the setup keeps other machines on the same Wi-Fi or office LAN from connecting
+(that is what `ports:` in `compose.yml` specifies).
+
 ```bash
 # If anything goes wrong, these two return you to the initial state (your safety net)
 docker compose down -v        # removes the container and the data
