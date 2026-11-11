@@ -5,12 +5,22 @@
 
 実行（projects/01-healthcheck の中で）:
     python -m unittest -v
+
+Auto-grading for Assignment 1.
+
+Verifies that the pure judgment functions (judge / worst_status /
+status_to_exit_code) match the spec. You do not need to edit this file.
+Reading it shows you what is expected.
+
+Run (from inside projects/01-healthcheck):
+    python -m unittest -v
 """
 import os
 import sys
 import unittest
 
 # src/ を import できるようにする（このリポジトリの課題共通の作法）。
+# Make src/ importable (the convention shared by every assignment in this repo).
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 import healthcheck  # noqa: E402
@@ -28,10 +38,11 @@ class TestJudge(unittest.TestCase):
 
     def test_boundary_warn_is_inclusive(self):
         # ちょうど warn の値は WARNING（「以上」で含める）。
+        # A value exactly at warn is WARNING (the boundary is inclusive).
         self.assertEqual(healthcheck.judge(70, warn=70, crit=90), "WARNING")
 
     def test_boundary_crit_is_inclusive(self):
-        # ちょうど crit の値は CRITICAL。
+        # ちょうど crit の値は CRITICAL。 / A value exactly at crit is CRITICAL.
         self.assertEqual(healthcheck.judge(90, warn=70, crit=90), "CRITICAL")
 
 
@@ -50,13 +61,14 @@ class TestWorstStatus(unittest.TestCase):
 
     def test_warning_beats_unknown(self):
         # 「危険」は「測れない」より優先。UNKNOWN が WARNING を隠さない。
+        # "Dangerous" outranks "unmeasurable". UNKNOWN must not hide WARNING.
         self.assertEqual(healthcheck.worst_status(["UNKNOWN", "WARNING"]), "WARNING")
 
     def test_critical_beats_unknown(self):
         self.assertEqual(healthcheck.worst_status(["UNKNOWN", "CRITICAL"]), "CRITICAL")
 
     def test_empty_is_unknown(self):
-        # 何も測れなかった → 測れない。
+        # 何も測れなかった → 測れない。 / Nothing could be measured → unmeasurable.
         self.assertEqual(healthcheck.worst_status([]), "UNKNOWN")
 
 

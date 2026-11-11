@@ -1,3 +1,5 @@
+> English version: [README.en.md](./README.en.md)
+
 # 課題6: デプロイ — 動かす・守る
 
 課題5のAPIは、いま `uvicorn` を**手で**起動している。ターミナルを閉じれば死ぬ。
@@ -158,7 +160,7 @@ bash projects/06-deploy/deploy/backup.sh projects/05-web-api/api.db ~/backups
 ## 完了チェック（これがそろえば課題6は修了）
 
 - [ ] `systemctl status terakoya-api` が active (running)
-- [ ] プロセスを kill しても生き返る／実機を再起動しても勝手に立ち上がる
+- [ ] プロセスを SIGKILL で異常死させても生き返る／実機を再起動しても勝手に立ち上がる
 - [ ] `curl http://localhost/health` が Nginx 経由で通る（`nginx -t` を通してから反映した）
 - [ ] `https://localhost/health` が自己署名TLSで通り、警告の意味を自分の言葉で言える
 - [ ] journalctl でアプリのログが追える／nginx の logrotate 設定を確認した

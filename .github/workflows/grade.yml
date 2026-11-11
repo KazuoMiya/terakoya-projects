@@ -1,40 +1,115 @@
 name: 自動採点
 
-# Pull Request のたびに、各課題のテストを走らせる（採点は「PRが緑になる」で確認する）。
-# main への push では走らせない——テンプレートのコピー直後に赤い×が出て驚かせないため。
-# 追加のインストールは不要（Python 標準ライブラリの unittest だけ）。秘密も使わない。
+# Pull Request のたびに、「そのPRで変更した課題」だけを採点する。
+#   例: projects/01-healthcheck/ の中を変更したPR → 課題1のテストだけが走る。
+#   まだ手を付けていない課題は雛形のままなので、テストは必ず落ちる。
+#   それを巻き込むとどのPRも緑にならないので、変更した課題だけを見る。
+# main への push では走らせない（テンプレートをコピーした直後に赤い×を出さないため）。
+# 秘密は使わない。権限は「リポジトリを読む」だけ。
+#
+# On every Pull Request, grade only the projects that the PR changed.
+#   Example: a PR that changes files under projects/01-healthcheck/ runs only
+#   Project 1's tests. Projects you have not started are still skeletons, so
+#   their tests always fail — including them would keep every PR red.
+# Does not run on pushes to main (so a fresh copy of the template shows no red ×).
+# Uses no secrets. The only permission is "read the repository".
 on:
   pull_request:
+  # 全課題をまとめて採点したいとき（修了前の総点検など）は、Actions タブから手動で実行する。
+  # To grade every project at once (e.g. a final check), run it by hand from the Actions tab.
+  workflow_dispatch:
+  # 参考実装（solutions ブランチ）は、push のたびに全課題が緑かを確かめる。
+  # The reference implementation (solutions branch) is checked in full on every push.
+  push:
+    branches: [solutions]
+
+permissions:
+  contents: read
 
 jobs:
   grade:
+    name: 採点
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+        with:
+          # PRでは「取り込んだ結果」と「取り込み先」を比べるので、履歴を2段分だけ取る。
+          # A PR compares "the merged result" with "the branch it merges into", so fetch two levels of history.
+          fetch-depth: 2
+          persist-credentials: false
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
-      - name: 課題1 ヘルスチェックCLI
-        run: python -m unittest discover -s projects/01-healthcheck -v
 
-      # 課題2の採点対象は「DBが無くても判定できる純関数」だけなので、
-      # ここで PostgreSQL を立てる必要はない（DBに繋ぐ部分は自己チェック）。
-      - name: 課題2 DB日次点検
-        run: python -m unittest discover -s projects/02-db-check -v
+      - name: 採点する課題を決める
+        id: pick
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            # HEAD は「このPRを取り込んだ結果」、HEAD^1 は「取り込み先の今の姿」。その差がPRの変更だ。
+            # HEAD is "this PR merged in"; HEAD^1 is "the target branch as it is now". Their diff is the PR's change.
+            if ! git rev-parse --verify --quiet HEAD^1 > /dev/null; then
+              echo "::error::比べる相手（取り込み先のコミット）が見つからない。 / The commit to compare against was not found."
+              exit 1
+            fi
+          fi
 
-      - name: 課題3 ログ解析
-        run: python -m unittest discover -s projects/03-log-analysis -v
+          projects=""
+          for dir in projects/*/; do
+            name="$(basename "$dir")"
+            # 想定外の名前のフォルダは採点しない。 / Skip folders with unexpected names.
+            case "$name" in *[!a-z0-9-]*) continue ;; esac
+            # 採点テストの無い課題（課題0・課題6）は対象外。 / Projects without grading tests (0 and 6) are skipped.
+            [ -d "projects/$name/tests" ] || continue
+            # PR以外（手動実行・solutions）は全課題。PRは、その課題のフォルダに変更があるときだけ。
+            # git diff --quiet は「差が無ければ成功、差があれば失敗」で終わるので、! で向きを逆にしている。
+            # Non-PR runs (manual, solutions) take every project; a PR takes a project only if its folder changed.
+            # git diff --quiet ends with "success if nothing differs, failure if something does", so ! flips it.
+            if [ "$EVENT_NAME" != "pull_request" ] || ! git diff --quiet HEAD^1 HEAD -- "projects/$name/"; then
+              projects="$projects $name"
+            fi
+          done
 
-      - name: 課題4 構成差分
-        run: python -m unittest discover -s projects/04-config-diff -v
+          echo "projects=$projects" >> "$GITHUB_OUTPUT"
+          if [ -n "$projects" ]; then
+            echo "採点する課題 / Projects to grade:$projects"
+          else
+            echo "このPRは、自動採点のある課題のフォルダを変更していないので、採点する課題はない。"
+            echo "This PR changes no project folder that has auto-grading, so there is nothing to grade."
+          fi
 
-      # 課題5だけは外部パッケージ（FastAPI）が要る。学習者のコピーでも同じ手順で入る。
-      - name: 課題5 依存の準備
-        run: pip install -r projects/05-web-api/requirements.txt
-      - name: 課題5 点検結果管理API
-        run: python -m unittest discover -s projects/05-web-api -v
+      - name: 採点
+        if: steps.pick.outputs.projects != ''
+        env:
+          PROJECTS: ${{ steps.pick.outputs.projects }}
+        run: |
+          failed=""
+          for name in $PROJECTS; do
+            echo ""
+            echo "==================== 採点 / Grading: $name ===================="
+            # 外部パッケージが要る課題は、手元と同じ requirements.txt から入れる。
+            # Projects that need external packages install them from the same requirements.txt you use locally.
+            if [ -f "projects/$name/requirements.txt" ]; then
+              python -m pip install --quiet --disable-pip-version-check -r "projects/$name/requirements.txt"
+            fi
+            if python -m unittest discover -s "projects/$name" -v; then
+              echo "| $name | ✅ 緑 / pass |" >> "$RUNNER_TEMP/result.md"
+            else
+              echo "| $name | ❌ 赤 / fail |" >> "$RUNNER_TEMP/result.md"
+              failed="$failed $name"
+            fi
+          done
 
-      - name: 最終課題 依存の準備
-        run: pip install -r projects/07-monitoring/requirements.txt
-      - name: 最終課題 統合監視
-        run: python -m unittest discover -s projects/07-monitoring -v
+          {
+            echo "| 課題 / Project | 結果 / Result |"
+            echo "|---|---|"
+            cat "$RUNNER_TEMP/result.md"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          if [ -n "$failed" ]; then
+            echo ""
+            echo "::error::落ちた課題 / Failed:$failed — 上の出力で、落ちたテストを読もう。 / Read the failing tests in the output above."
+            exit 1
+          fi

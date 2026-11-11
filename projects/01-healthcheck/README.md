@@ -1,3 +1,5 @@
+> English version: [README.en.md](./README.en.md)
+
 # 課題1: サーバーヘルスチェックCLI
 
 手動の「朝のサーバー点検」を自動化する、コマンドラインツールを作る。

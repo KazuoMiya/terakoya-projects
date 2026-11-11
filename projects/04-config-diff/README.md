@@ -1,3 +1,5 @@
+> English version: [README.en.md](./README.en.md)
+
 # 課題4: 構成情報の収集と差分検知
 
 「気づいたら設定が変わっていた」をなくす道具を作る。

@@ -1,3 +1,5 @@
+> English version: [README.en.md](./README.en.md)
+
 # Terakoya プロジェクト集 — 実装の一周
 
 学習サイト **[Terakoya](https://terakoya.miya-dca.workers.dev)** のコース
@@ -26,6 +28,10 @@
 3. `python -m unittest -v` で答え合わせ（**自動採点がある課題**）
 4. push → **Pull Request** → 自動採点が **緑 ✓** → セルフマージ
 5. `RETROSPECTIVE.md`（振り返り）を埋める
+
+**自動採点は、そのPRで変更した課題だけを見る。** `projects/01-healthcheck/` の中を変更したPRなら、
+走るのは課題1のテストだけだ。まだ手を付けていない課題は雛形のままで必ず落ちるので、採点に含めない。
+全課題をまとめて確かめたいときは、リポジトリの「Actions」タブ →「自動採点」→「Run workflow」で手動実行できる。
 
 **自動採点が無い課題**もある（DB点検・デプロイなど、環境に依存するもの）。
 その課題は、各フォルダの `README.md` の完了チェックリストと `expected-output.md` を
@@ -64,8 +70,33 @@ Terakoya の3コース（システムとコードの基礎／インフラ基礎�
 | （課題2）`password authentication failed` | `.env` を作ったか（`cp .env.example .env`）。作り直すなら `docker compose down -v` から |
 | （課題2）DBが変な状態になった | `docker compose down -v && docker compose up -d` でまっさらに戻る |
 | Checks（自動採点）が赤い | 赤いジョブを開き、落ちたテストの出力を読む。そこが直す場所 |
+| 自分が触っていない課題のテストで Checks が赤い／テストまで進まずに落ちる | 2026年11月より前に作ったコピーは、採点の設定が古い。下の「テンプレートの更新を取り込む」へ |
+| 未着手の課題まで採点されて赤い | そのPRで、未着手の課題のフォルダの中（README など）を変更していないか。採点は「フォルダの中を変更した課題」すべてが対象になる |
 | Checks がそもそも出ない | リポジトリの「Actions」タブでワークフローを有効化 |
 | ぐちゃぐちゃになった | このコピーを消して、テンプレートから作り直してよい |
+
+## テンプレートの更新を取り込む（2026年11月より前にコピーした人へ）
+
+テンプレートから作ったコピーは、作った時点の写しだ。テンプレート側の修正は自動では届かない。
+2026年11月の修正のうち、手で取り込んでほしいのは次の3点だ。
+見分け方: 自分の `.github/workflows/grade.yml` に「採点する課題を決める」という行が無ければ、古いコピーである。
+
+1. **自動採点（`.github/workflows/grade.yml`）** — 以前の設定は、PRのたびに全課題を採点していた。
+   そのため、課題1だけを実装したPRが、未着手の課題のテストで必ず赤になった。
+   - 直し方: テンプレートの [grade.yml](https://github.com/KazuoMiya/terakoya-projects/blob/main/.github/workflows/grade.yml) を開き、
+     「Copy raw file」で中身をコピーする。自分のリポジトリの同じファイルを GitHub の画面で開き、
+     鉛筆のアイコン（Edit）→ 中身を全部貼り替える →「Commit changes」。
+   - 開いたままのPRがあれば、いったん「Close pull request」→「Reopen pull request」を押す。新しい設定で採点が走り直す。
+     それでも古い採点のままなら、作業ブランチに新しいコミットを1つ push する。
+   - 手元のリポジトリにも反映する: `git switch main` → `git pull`。
+2. **課題2の `compose.yml`** — DBのポートを `127.0.0.1`（このPC自身）にだけ開くようにした。
+   以前は、同じWi-Fiや社内LANに居る他のPCからも繋げた。
+   - 直し方: `ports:` の `"5432:5432"` を `"127.0.0.1:5432:5432"` に、`"1521:1521"` を `"127.0.0.1:1521:1521"` に
+     書き換えて、`docker compose up -d` をやり直す。
+3. **課題2の Oracle 選択トラック（使う人だけ）** — 点検ユーザーへの権限付与が失敗していた（`v$` ビューが ORA-00942 で読めない）。
+   - 直し方: `projects/02-db-check/initdb-oracle/01-checker-grants.sql` をテンプレートの最新版に置き換え、
+     `docker compose --profile oracle down -v` → `docker compose --profile oracle up -d` で作り直す
+     （PostgreSQL のデータも初期状態に戻る）。
 
 ## このリポジトリについて
 

@@ -8,6 +8,18 @@
 
 実行（projects/04-config-diff の中で）:
     python -m unittest -v
+
+Auto-grading for Project 4.
+
+Verifies the four pure functions of the diff engine
+(normalize / diff_config / judge_diff / select_old_files). Collection
+(OS commands) varies by environment, so it is not graded here
+(check it yourself with the two files in samples/ and expected-output.md).
+
+You do not need to edit this file. Reading it tells you what is expected.
+
+Run (inside projects/04-config-diff):
+    python -m unittest -v
 """
 import os
 import sys
@@ -54,6 +66,7 @@ class TestDiffConfig(unittest.TestCase):
 
     def test_list_diff_reports_items_not_whole_list(self):
         # 「リストが変わった」ではなく「何が増え、何が減ったか」。
+        # Not "the list changed" but "what was added and what was removed."
         d = config_diff.diff_config({"ports": [22, 80]}, {"ports": [22, 8080]})
         self.assertEqual(d["changed"]["ports"]["added"], [8080])
         self.assertEqual(d["changed"]["ports"]["removed"], [80])
@@ -77,7 +90,7 @@ class TestDiffConfig(unittest.TestCase):
 
 class TestJudgeDiff(unittest.TestCase):
     def test_empty_diff_is_ok(self):
-        # 差分ゼロが正常。
+        # 差分ゼロが正常。 / Zero diff is normal.
         self.assertEqual(
             config_diff.judge_diff({"added": {}, "removed": {}, "changed": {}}), "OK"
         )
@@ -124,6 +137,7 @@ class TestSelectOldFiles(unittest.TestCase):
 
     def test_selects_only_does_not_delete(self):
         # 戻り値はパスの一覧。この関数は選ぶだけで、消す仕事を持たない。
+        # The return value is a list of paths. This function only selects; deleting is not its job.
         now = 1_000 * self.DAY
         out = config_diff.select_old_files([("/a", 0), ("/b", now)], days=30, now_epoch=now)
         self.assertIsInstance(out, list)
@@ -134,6 +148,12 @@ class TestSamplesEndToEnd(unittest.TestCase):
     """samples/ の2ファイルで、正規化→差分→判定の一周が仕様どおりかを確かめる。
 
     ここが緑なら、あなたの差分エンジンは expected-output.md と同じ結論を出せる。
+
+    Uses the two files in samples/ to verify one full lap of
+    normalize → diff → judge against the spec.
+
+    If this is green, your diff engine reaches the same conclusion as
+    expected-output.md.
     """
 
     @classmethod

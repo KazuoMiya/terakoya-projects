@@ -7,6 +7,17 @@
 
 実行（projects/03-log-analysis の中で）:
     python -m unittest -v
+
+Auto-grading for Assignment 3.
+
+Verifies the pure functions that can be judged without a log file
+(parse_line / bucket_by_hour / detect_spike). File reading, reports, and
+notifications depend on the environment, so they are not graded here.
+
+You do not need to edit this file. Reading it shows you what is expected.
+
+Run (from inside projects/03-log-analysis):
+    python -m unittest -v
 """
 import os
 import sys
@@ -26,6 +37,7 @@ class TestParseLine(unittest.TestCase):
 
     def test_info_line_with_double_space(self):
         # INFO の後ろの空白は2個。空白1個を決め打ちすると落ちる。
+        # Two spaces after INFO. Hard-coding a single space breaks here.
         r = log_check.parse_line("2026-07-14 00:00:11 INFO  request handled path=/health status=200")
         self.assertEqual(r["level"], "INFO")
         self.assertEqual(r["message"], "request handled path=/health status=200")
@@ -36,6 +48,7 @@ class TestParseLine(unittest.TestCase):
 
     def test_traceback_line_is_none(self):
         # 本物のログには必ず「形式に合わない行」が混ざる。落ちずに None。
+        # Real logs always contain lines that do not match the format. Return None, don't crash.
         self.assertIsNone(log_check.parse_line("Traceback (most recent call last):"))
 
     def test_continuation_line_is_none(self):
@@ -65,6 +78,7 @@ class TestBucketByHour(unittest.TestCase):
 
     def test_level_filter(self):
         # WARN を数えたいときもある。level 引数で切り替えられること。
+        # Sometimes you want to count WARN. The level argument must switch this.
         self.assertEqual(
             log_check.bucket_by_hour(self.RECORDS, level="WARN"),
             {"2026-07-15 13": 1},
@@ -78,6 +92,7 @@ class TestDetectSpike(unittest.TestCase):
     def test_clear_spike(self):
         series = [("h1", 2), ("h2", 3), ("h3", 2), ("h4", 44)]
         # h4 のベースラインは (2+3+2)/3 ≒ 2.33。44 >= 7 かつ 44 >= 10 → 急増。
+        # Baseline for h4 is (2+3+2)/3 ≈ 2.33. 44 >= 7 and 44 >= 10 → spike.
         self.assertEqual(log_check.detect_spike(series), ["h4"])
 
     def test_no_spike_when_flat(self):
@@ -86,22 +101,28 @@ class TestDetectSpike(unittest.TestCase):
 
     def test_min_count_guard(self):
         # 1件→3件は「3倍増」だが、絶対数が小さい。鳴らさない（アラート疲れの防波堤）。
+        # 1 → 3 is a "3x increase", but the absolute count is small. Stay silent
+        # (the seawall against alert fatigue).
         series = [("h1", 1), ("h2", 3)]
         self.assertEqual(log_check.detect_spike(series), [])
 
     def test_min_count_can_be_tuned(self):
         # min_count を下げれば同じデータでも鳴る。ガードの意味がここで分かる。
+        # Lower min_count and the same data fires. This is where the guard's meaning clicks.
         series = [("h1", 1), ("h2", 3)]
         self.assertEqual(log_check.detect_spike(series, min_count=3), ["h2"])
 
     def test_zero_baseline_with_enough_count_is_spike(self):
         # それまで0件 → いきなり12件。0×factor=0 なので倍率は必ず満たす。
         # min_count が実質の門番になる。0除算や None を返して落ちないこと。
+        # Zero so far → suddenly 12. 0 × factor = 0, so the ratio always passes.
+        # min_count becomes the real gatekeeper. No division-by-zero crash, no returning None.
         series = [("h1", 0), ("h2", 0), ("h3", 12)]
         self.assertEqual(log_check.detect_spike(series), ["h3"])
 
     def test_first_element_never_flagged(self):
         # 先頭は比べる相手がいない。どんなに大きくても急増とは言えない。
+        # The first element has nothing to compare against. However large, it is not a spike.
         series = [("h1", 100)]
         self.assertEqual(log_check.detect_spike(series), [])
 
@@ -110,8 +131,10 @@ class TestDetectSpike(unittest.TestCase):
 
     def test_boundary_is_inclusive(self):
         # ちょうど factor 倍・ちょうど min_count は「以上」で含める（課題1からの約束）。
+        # Exactly factor times and exactly min_count are included ("or above" — the promise from Assignment 1).
         series = [("h1", 4), ("h2", 12)]
         # ベースライン4、factor3 → 12 >= 12 かつ 12 >= 10 → 急増。
+        # Baseline 4, factor 3 → 12 >= 12 and 12 >= 10 → spike.
         self.assertEqual(log_check.detect_spike(series), ["h2"])
 
     def test_multiple_spikes(self):
@@ -122,7 +145,10 @@ class TestDetectSpike(unittest.TestCase):
 
 
 class TestStateModelIsAvailable(unittest.TestCase):
-    """課題1の状態モデルは配ってある（作り直さなくてよい）ことの確認。"""
+    """課題1の状態モデルは配ってある（作り直さなくてよい）ことの確認。
+
+    Confirms that the Assignment 1 status model is provided (no need to rebuild it).
+    """
 
     def test_worst_status(self):
         self.assertEqual(log_check.worst_status(["OK", "WARNING"]), "WARNING")
