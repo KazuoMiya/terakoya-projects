@@ -22,15 +22,16 @@ import sys
 
 
 def check_python_version():
-    """Python 3.9 以上か。
+    """Python 3.12 以上か（3.11 以前は、サポートが終わったか終わりが近い。採点環境も 3.12）。
 
-    Is this Python 3.9 or newer?
+    Is this Python 3.12 or newer? (3.11 and older are past or near end of
+    support; the grading environment is 3.12 too.)
     """
     major, minor = sys.version_info[:2]
-    if (major, minor) >= (3, 9):
+    if (major, minor) >= (3, 12):
         return True, f"Python {major}.{minor} が使えている / Python {major}.{minor} is available"
     return False, (
-        f"Python {major}.{minor} は少し古い。3.9 以上を用意しよう。 / Python {major}.{minor} is a bit old. Get 3.9 or newer.\n"
+        f"Python {major}.{minor} は古い。3.12 以上を用意しよう。 / Python {major}.{minor} is too old. Get 3.12 or newer.\n"
         "     → 課題0『Windows編 / Mac編』の回に戻って、python3 を入れ直す。 / Go back to the Assignment 0 lesson (Windows / Mac edition) and reinstall python3."
     )
 
